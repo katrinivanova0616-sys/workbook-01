@@ -1,0 +1,2004 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f7fa">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Воркбук 01">
+<title>Claude и ChatGPT — воркбук 01</title>
+<meta name="description" content="Воркбук 01 · Нейропедалирование: оплата, настройка, проекты, скиллы, MCP, промпты и опросник для Claude и ChatGPT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Caveat:wght@700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f7fa;
+  --paper:#ffffff;
+  --ink:#0c0c10;
+  --ink-2:#4d4d58;
+  --ink-3:#9898a4;
+  --line:rgba(12,12,16,.07);
+  --pink:#ff2e97;
+  --pink-2:#ff7cc2;
+  --pink-soft:#ffe3f1;
+  --blue:#1e9bff;
+  --blue-2:#8ed2ff;
+  --blue-soft:#e2f3ff;
+  --code:#fbfbfd;
+  --glass:rgba(255,255,255,.72);
+  --shadow:0 1px 2px rgba(20,20,40,.04),0 14px 36px rgba(40,30,80,.08);
+  --r:28px;
+  --px:Manrope,system-ui,sans-serif;
+  --pixel:"Press Start 2P",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  font-family:Manrope,system-ui,sans-serif;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-color:var(--bg);
+  background-image:radial-gradient(rgba(12,12,16,.16) 1.1px,transparent 1.3px);
+  background-size:24px 24px;
+}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+svg.i{width:1em;height:1em;display:inline-block;vertical-align:-.12em}
+
+/* ===== glossy primitives ===== */
+.gpill{
+  display:inline-flex;align-items:center;gap:8px;font:800 14px var(--px);letter-spacing:.04em;text-transform:uppercase;color:#fff;
+  padding:9px 22px;border-radius:999px;border:2px solid rgba(255,255,255,.9);
+  background:linear-gradient(180deg,#ff9fd2 0%,#ff3f9f 55%,#f0167f 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.65),inset 0 -4px 8px rgba(150,0,70,.3),0 0 0 3px rgba(255,46,151,.25),0 10px 24px rgba(255,46,151,.35);
+}
+.gpill.blue{background:linear-gradient(180deg,#a8ddff 0%,#3aa9ff 55%,#1488ee 100%);box-shadow:inset 0 2px 0 rgba(255,255,255,.65),inset 0 -4px 8px rgba(0,60,150,.3),0 0 0 3px rgba(30,155,255,.22),0 10px 24px rgba(30,155,255,.3)}
+.key{
+  position:relative;display:grid;place-items:center;border-radius:22px;
+  background:linear-gradient(160deg,#ffffff 0%,#f3f3f7 100%);
+  box-shadow:inset 0 2px 0 #fff,inset 0 -5px 0 rgba(12,12,16,.06),0 2px 3px rgba(0,0,0,.05),0 16px 30px rgba(40,30,80,.14);
+}
+.bubble{
+  position:absolute;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 32% 28%,#fff 0 9%,#ffb6dc 22%,#ff3f9f 62%,#d10b6f 100%);
+  box-shadow:0 8px 18px rgba(255,46,151,.35);animation:float 6s ease-in-out infinite;
+}
+.bubble.b{background:radial-gradient(circle at 32% 28%,#fff 0 9%,#c4e8ff 24%,#3aa9ff 64%,#0f78d6 100%);box-shadow:0 8px 18px rgba(30,155,255,.3)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.ticks{position:absolute;width:34px;height:30px;pointer-events:none}
+.ticks i{position:absolute;width:4px;height:13px;border-radius:3px;background:var(--pink)}
+.ticks i:nth-child(1){left:2px;top:12px;transform:rotate(-40deg)}
+.ticks i:nth-child(2){left:14px;top:2px}
+.ticks i:nth-child(3){left:26px;top:12px;transform:rotate(40deg)}
+
+/* ===== top bar ===== */
+.progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:60}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));border-radius:0 4px 4px 0}
+.bar{position:sticky;top:12px;z-index:50;max-width:1000px;margin:12px auto 0;padding:0 16px}
+.bar-in{display:flex;align-items:center;gap:10px;background:var(--glass);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow);border-radius:999px;padding:7px 8px 7px 18px}
+.brand{font:800 13px var(--px);letter-spacing:.02em;white-space:nowrap}
+.brand em{font-style:normal;color:var(--pink)}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-size:13px;font-weight:700;color:var(--ink-2);text-decoration:none;padding:7px 12px;border-radius:999px;white-space:nowrap;transition:.2s}
+.nav a:hover,.nav a.act{background:var(--pink-soft);color:var(--pink)}
+.count{flex:none;font:800 12px var(--px);letter-spacing:.02em;color:#fff;background:var(--ink);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.count b{color:var(--pink-2);font-weight:700}
+
+/* ===== hero ===== */
+.hero{position:relative;padding:54px 0 30px}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.meta-tags{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
+.meta-tags span+span::before{content:"|";margin-right:14px;color:var(--ink-3);font-weight:400}
+.meta-tags svg{color:var(--pink);width:22px;height:22px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:center;margin-top:34px}
+h1{font-family:var(--pixel);font-weight:400;text-transform:uppercase;line-height:1.12;letter-spacing:-.02em;word-spacing:-.7em}
+h1 .l1{display:block;font-size:clamp(40px,8vw,92px);color:var(--ink)}
+h1 .l2{display:block;margin-top:6px;font-size:clamp(28px,5.4vw,62px);color:var(--blue)}
+.lead{font-size:clamp(22px,3.2vw,32px);font-weight:800;line-height:1.12;margin-top:16px;letter-spacing:-.01em}
+.lead svg{color:var(--pink);width:.8em;height:.8em;vertical-align:.02em}
+.feat{margin-top:24px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.95);border-radius:22px;box-shadow:var(--shadow);padding:14px 20px;max-width:440px}
+.feat li{list-style:none;display:flex;align-items:center;gap:14px;font-size:16px;font-weight:600;padding:7px 0}
+.feat li svg{flex:none;width:22px;height:22px;color:var(--pink)}
+
+/* hero stage */
+.stage{position:relative;height:430px}
+.toggle-card{
+  position:absolute;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:24px;width:250px;
+  background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(255,236,247,.78));
+  border:1.5px solid rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:inset 0 2px 0 #fff,0 0 0 1px rgba(255,46,151,.12),0 18px 34px rgba(255,46,151,.18);
+  animation:float 7s ease-in-out infinite;
+}
+.toggle-card .ico{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#ff9fd2,#ff3f9f);box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+.toggle-card .ico.b{background:linear-gradient(180deg,#a8ddff,#2a9cff)}
+.toggle-card .ico svg{width:24px;height:24px}
+.toggle-card b{font-size:15px;line-height:1.2;font-weight:700;flex:1}
+.sw{position:relative;flex:none;width:58px;height:32px;border-radius:999px;border:none;cursor:pointer;background:#e6e6ec;box-shadow:inset 0 2px 4px rgba(0,0,0,.12);transition:.25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:.25s cubic-bezier(.3,1.6,.5,1)}
+.sw.on{background:linear-gradient(180deg,#ff7cc2,#ff2e97);box-shadow:inset 0 2px 4px rgba(150,0,70,.25),0 0 14px rgba(255,46,151,.45)}
+.sw.on::after{left:29px}
+.claude-key{position:absolute;right:4px;top:300px;width:140px;height:140px;transform:rotate(-6deg);animation:float 6s ease-in-out infinite;animation-delay:.8s}
+.claude-key svg.star8{width:60px;height:60px;color:#e8774b}
+.claude-key small{position:absolute;bottom:16px;font:800 17px Manrope,sans-serif}
+.cursor3d{position:absolute;right:-12px;top:410px;width:66px;filter:drop-shadow(0 10px 14px rgba(255,46,151,.35));animation:float 5s ease-in-out infinite;animation-delay:.3s}
+
+/* marquee */
+.marquee{overflow:hidden;margin:26px -16px 0;padding:13px 0;transform:rotate(-1.2deg);
+  background:linear-gradient(180deg,#ff8ccb,#ff2e97 60%,#ec1180);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 12px 26px rgba(255,46,151,.3)}
+.marquee .track{display:flex;width:max-content;animation:run 30s linear infinite}
+.marquee .track span{display:inline-flex;align-items:center;gap:22px;padding-right:22px;font:800 17px var(--px);letter-spacing:.02em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.marquee svg{width:16px;height:16px;color:#fff}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ===== bento map ===== */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.tile{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:150px;padding:18px;border-radius:26px;text-decoration:none;color:var(--ink);transition:transform .25s,box-shadow .25s}
+.tile.key{place-items:initial;display:flex}
+.tile:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:inset 0 2px 0 #fff,0 22px 40px rgba(255,46,151,.22)}
+.tile .em{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#ff9fd2,#ff3f9f);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 6px 14px rgba(255,46,151,.3)}
+.tile .em.b{background:linear-gradient(180deg,#a8ddff,#2a9cff);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 6px 14px rgba(30,155,255,.3)}
+.tile .em svg{width:24px;height:24px}
+.tile h4{font:800 21px/1.05 var(--px);text-transform:uppercase}
+.tile small{display:block;font-size:13px;color:var(--ink-2);margin-top:5px;font-weight:600}
+.tile .n{position:absolute;top:16px;right:18px;font:800 16px var(--px);color:var(--ink-3)}
+.tile.big{grid-column:span 2;background:linear-gradient(150deg,#ff9fd2,#ff3f9f 60%,#ee1683);color:#fff;box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 18px 36px rgba(255,46,151,.32)}
+.tile.big .em{background:#fff;color:var(--pink)}
+.tile.big small,.tile.big .n{color:rgba(255,255,255,.9)}
+.tile.done .n{color:#fff;background:var(--ink);border-radius:999px;padding:2px 9px;font-size:13px}
+.tile.done .n::after{content:" ✓"}
+
+/* ===== sections ===== */
+section{padding:46px 0 10px}
+.sec-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.num{flex:none;width:64px;height:64px;font:400 18px var(--pixel);color:var(--pink)}
+.num.b{color:var(--blue)}
+h2{font:400 clamp(20px,3.3vw,32px)/1.3 var(--pixel);text-transform:uppercase;letter-spacing:-.03em;word-spacing:-.45em}
+h2 em{font-style:normal;color:var(--blue)}
+.sub{color:var(--ink-2);margin:10px 0 22px 80px;font-size:16px;font-weight:600}
+.sub b{color:var(--pink)}
+.done-btn{margin-left:auto;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font:700 13px Manrope,sans-serif;color:var(--ink);background:#fff;border:none;border-radius:999px;padding:7px 8px 7px 16px;box-shadow:var(--shadow);transition:.2s}
+.done-btn .sw{width:46px;height:26px;pointer-events:none}
+.done-btn .sw::after{width:20px;height:20px}
+.done-btn .sw.on::after{left:23px}
+.done-btn:hover{transform:translateY(-2px)}
+
+.card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:24px;margin-bottom:16px}
+.card.glass{background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(255,240,248,.85));border:1.5px solid #fff}
+.card.glass.b{background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(232,245,255,.9))}
+.card h3{font-size:19px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card h3 .dot{width:10px;height:10px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 4px var(--pink-soft)}
+.card h3 .dot.b{background:var(--blue);box-shadow:0 0 0 4px var(--blue-soft)}
+.card p,.card li{color:var(--ink-2);font-size:15px}
+.card ul{padding-left:20px;margin-top:6px}
+.card li{margin:6px 0}
+.card li::marker{color:var(--pink)}
+.card b{color:var(--ink);font-weight:800}
+.hl{color:var(--pink)!important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.note{display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:14px 16px;border-radius:18px;background:var(--pink-soft);font-size:15px;font-weight:600;color:var(--ink)}
+.note svg{flex:none;width:20px;height:20px;color:var(--pink);margin-top:2px}
+.note.b{background:var(--blue-soft)}
+.note.b svg{color:var(--blue)}
+
+/* steps */
+.steps{counter-reset:s;list-style:none;padding-left:0!important}
+.steps>li{counter-increment:s;position:relative;padding-left:44px;margin:13px 0!important;color:var(--ink)!important;font-weight:600}
+.steps>li::before{content:counter(s);position:absolute;left:0;top:-2px;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font:800 16px var(--px);color:#fff;background:linear-gradient(180deg,#ff9fd2,#ff3f9f);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 4px 10px rgba(255,46,151,.3)}
+.b-steps>li::before{background:linear-gradient(180deg,#a8ddff,#2a9cff);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 4px 10px rgba(30,155,255,.3)}
+.why{display:block;font-size:13px;color:var(--ink-3);font-weight:600;margin-top:2px}
+
+/* buttons */
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:700 14px Manrope,sans-serif;color:var(--ink);padding:11px 18px;border-radius:16px;cursor:pointer;border:none;
+  background:linear-gradient(180deg,#fff,#f2f2f6);box-shadow:inset 0 2px 0 #fff,inset 0 -4px 0 rgba(12,12,16,.07),0 6px 14px rgba(40,30,80,.12);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(2px);box-shadow:inset 0 2px 0 #fff,inset 0 -1px 0 rgba(12,12,16,.07),0 2px 4px rgba(40,30,80,.12)}
+.btn svg{width:16px;height:16px}
+.btn.pink{color:#fff;background:linear-gradient(180deg,#ff8ccb,#ff2e97);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(150,0,70,.25),0 8px 18px rgba(255,46,151,.35)}
+.btn.blue{color:#fff;background:linear-gradient(180deg,#8ed2ff,#1e9bff);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,60,150,.25),0 8px 18px rgba(30,155,255,.32)}
+
+/* table */
+.tbl-wrap{overflow-x:auto;margin-top:6px}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px;border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+.tbl th{background:var(--pink-soft);text-align:left;font:800 12px var(--px);letter-spacing:.02em;text-transform:uppercase;padding:11px 14px}
+.tbl td{padding:12px 14px;border-top:1px solid var(--line);color:var(--ink-2);vertical-align:top;background:#fff}
+.tbl td b{color:var(--ink)}
+
+/* chooser */
+.chooser{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px}
+.chooser p{font-weight:800;margin-right:4px}
+.chip{cursor:pointer;font:700 14px Manrope,sans-serif;border:none;color:var(--ink);border-radius:999px;padding:10px 18px;background:#fff;box-shadow:var(--shadow);transition:.2s}
+.chip:hover{transform:translateY(-2px)}
+.chip.on{color:#fff;background:linear-gradient(180deg,#ff8ccb,#ff2e97);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 8px 18px rgba(255,46,151,.35)}
+.variants .card{transition:opacity .3s,transform .3s,box-shadow .3s}
+.variants.picked .card{opacity:.38;transform:scale(.98)}
+.variants.picked .card.pick{opacity:1;transform:scale(1.01);box-shadow:0 0 0 3px var(--pink),0 20px 40px rgba(255,46,151,.25)}
+.variants.picked .card.pick.vb{box-shadow:0 0 0 3px var(--blue),0 20px 40px rgba(30,155,255,.25)}
+
+/* checklist switches */
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:4px}
+.check{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;cursor:pointer;border:1.5px solid #fff;text-align:left;font:700 14.5px Manrope,sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(255,240,248,.85));box-shadow:var(--shadow);transition:.2s}
+.check:hover{transform:translateY(-2px)}
+.check>span:first-child{flex:1}
+.check .sw{pointer-events:none}
+
+/* tabs */
+.tabs{display:inline-flex;background:#fff;border-radius:999px;padding:5px;box-shadow:var(--shadow);margin-bottom:14px}
+.tab{cursor:pointer;border:none;background:transparent;font:700 14px Manrope,sans-serif;color:var(--ink-2);padding:9px 22px;border-radius:999px;transition:.2s}
+.tab.on{background:var(--ink);color:#fff}
+.pane{display:none}
+.pane.on{display:block;animation:fadeUp .35s ease}
+
+/* prompt */
+.prompt{margin-top:16px;border-radius:20px;overflow:hidden;background:var(--code);border:1px solid var(--line);box-shadow:inset 0 1px 0 #fff}
+.prompt-top{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 16px;background:#fff;border-bottom:1px dashed rgba(12,12,16,.12)}
+.prompt-top span{font:800 12px/1.5 var(--px);letter-spacing:.02em;text-transform:uppercase}
+.prompt-top span::before{content:"✦ ";color:var(--pink)}
+.copy{margin-left:auto;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:700 13px Manrope,sans-serif;color:#fff;border:none;padding:8px 15px;border-radius:12px;
+  background:linear-gradient(180deg,#2a2a33,#0c0c10);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 4px 10px rgba(0,0,0,.18);transition:.15s}
+.copy:hover{background:linear-gradient(180deg,#ff8ccb,#ff2e97)}
+.copy:active{transform:translateY(2px)}
+.copy.ok{background:linear-gradient(180deg,#ff8ccb,#ff2e97)}
+pre{margin:0;padding:18px;font:13.5px/1.65 "JetBrains Mono",ui-monospace,monospace;color:#1c1c22;white-space:pre-wrap;word-break:break-word}
+.prompt.long pre{max-height:240px;overflow:hidden;transition:max-height .45s ease}
+.prompt.long:not(.open) pre{-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.prompt.long.open pre{max-height:4000px}
+.more{display:block;width:100%;cursor:pointer;border:none;border-top:1px dashed rgba(12,12,16,.12);background:#fff;font:700 13px Manrope,sans-serif;color:var(--pink);padding:11px}
+.cmd{display:flex;align-items:center;gap:8px;background:var(--code);border:1px solid var(--line);border-radius:14px;padding:7px 7px 7px 12px;margin-top:12px}
+.cmd code{font:13px "JetBrains Mono",ui-monospace,monospace;overflow-x:auto;white-space:nowrap;flex:1;scrollbar-width:none}
+.cmd code::-webkit-scrollbar{display:none}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 4px}
+.skill{padding:18px;border-radius:24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;transition:transform .25s}
+.skill.key{place-items:initial}
+.skill:hover{transform:translateY(-5px) rotate(-1.5deg)}
+.skill .em{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:20px;background:var(--pink-soft)}
+.skill:nth-child(even) .em{background:var(--blue-soft)}
+.skill h4{font:800 16px/1.3 var(--px);text-transform:uppercase}
+.skill p{font-size:13.5px;color:var(--ink-2);font-weight:600}
+
+/* algorithm */
+.alg{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.ms{padding:16px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .2s}
+.ms:hover{transform:translateY(-4px)}
+.ms b{font:400 17px var(--pixel);color:var(--pink)}
+.ms:nth-child(even) b{color:var(--blue)}
+.ms h4{font-size:15px;font-weight:800;margin:4px 0}
+.ms p{font-size:13px;color:var(--ink-2)}
+.formula{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.formula span{font:800 13px var(--px);letter-spacing:.02em;text-transform:uppercase;padding:8px 14px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+.formula span:nth-child(odd){color:var(--pink)}
+.formula span:nth-child(even){color:var(--blue)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pills span{font-size:11.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+
+/* folders — macOS Finder */
+.finder{margin-top:46px;border-radius:22px;background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.95);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 22px 50px rgba(40,30,80,.14);overflow:hidden}
+.finder-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.06);background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(246,246,250,.8))}
+.lights{display:flex;gap:8px}
+.lights i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.15)}
+.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.finder-title{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font:600 13px -apple-system,BlinkMacSystemFont,"SF Pro Text",Manrope,sans-serif;color:#3a3a40}
+.finder-title svg{width:15px;height:15px;color:#4ea4ef}
+.finder-count{font:500 12px -apple-system,BlinkMacSystemFont,Manrope,sans-serif;color:var(--ink-3)}
+.folders{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;padding:22px 16px 18px}
+.folder-btn{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;padding:10px 6px 12px;border-radius:14px;font:inherit;color:var(--ink);transition:background .2s}
+.folder-btn:hover{background:rgba(0,0,0,.035)}
+.folder-btn:hover .ficon{transform:translateY(-3px) scale(1.04)}
+.ficon{position:relative;width:88px;height:72px;transition:transform .3s cubic-bezier(.3,1.5,.5,1);filter:drop-shadow(0 6px 10px rgba(30,100,180,.22))}
+.ficon svg{width:100%;height:100%;overflow:visible}
+.ficon .fb{fill:url(#fbB)}
+.ficon .ff{fill:url(#ffB)}
+.ficon .paper{fill:#fff;opacity:.95}
+.ficon .shine{stroke:rgba(255,255,255,.55);stroke-width:1.2}
+.ficon .glyph{position:absolute;left:50%;top:58%;width:26px;height:26px;transform:translate(-50%,-50%);color:rgba(10,70,140,.42);filter:drop-shadow(0 1px 0 rgba(255,255,255,.55))}
+.flabel{margin-top:6px;font:600 13.5px/1.25 -apple-system,BlinkMacSystemFont,"SF Pro Text",Manrope,sans-serif;text-align:center;padding:2px 8px;border-radius:6px;transition:.2s}
+.folder-btn .fn{font:500 11px -apple-system,BlinkMacSystemFont,Manrope,sans-serif;color:var(--ink-3);letter-spacing:0;text-transform:none}
+.fbar{display:block;width:56px;height:4px;border-radius:4px;background:rgba(0,0,0,.07);overflow:hidden;margin-top:4px}
+.fbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .5s ease}
+.folder-btn.on{background:rgba(255,46,151,.08)}
+.folder-btn.on .ficon{filter:drop-shadow(0 8px 14px rgba(255,46,151,.35))}
+.folder-btn.on .fb{fill:url(#fbP)}
+.folder-btn.on .ff{fill:url(#ffP)}
+.folder-btn.on .glyph{color:rgba(140,0,70,.42)}
+.folder-btn.on .flabel{background:var(--pink);color:#fff}
+.folder-btn.full .fn::after{content:" · ✓";color:var(--pink);font-weight:700}
+
+/* lessons */
+.lesson{display:none}
+.lesson.on{display:block;animation:fadeUp .4s ease}
+.kicker{display:block;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.block{position:relative;margin-top:30px}
+.step-tag{display:inline-flex;align-items:center;gap:10px;margin:0 0 12px;font:800 13px/1.4 var(--px);letter-spacing:.02em;text-transform:uppercase;color:var(--ink)}
+.step-tag::before{content:"";width:22px;height:22px;border-radius:7px;background:linear-gradient(180deg,#ff9fd2,#ff3f9f);box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+.lesson[data-lesson="2"] .step-tag::before,.lesson[data-lesson="4"] .step-tag::before{background:linear-gradient(180deg,#a8ddff,#2a9cff)}
+.next{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px;margin-top:34px;padding:18px;border-radius:24px;background:var(--glass);border:1.5px solid #fff;box-shadow:var(--shadow)}
+.next span{font-weight:800;margin-right:auto}
+.next .btn:first-child:not(.pink){margin-right:auto}
+
+/* tracker */
+.tracker{padding:22px;border-radius:28px;background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(255,236,247,.9));border:1.5px solid #fff;box-shadow:inset 0 2px 0 #fff,0 0 0 1px rgba(255,46,151,.1),0 18px 36px rgba(255,46,151,.14)}
+.lesson[data-lesson="2"] .tracker,.lesson[data-lesson="4"] .tracker{background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(228,244,255,.92));box-shadow:inset 0 2px 0 #fff,0 0 0 1px rgba(30,155,255,.1),0 18px 36px rgba(30,155,255,.14)}
+.tr-head{display:flex;align-items:center;gap:12px}
+.tr-head h3{font:800 18px/1.3 var(--px);text-transform:uppercase}
+.tr-count{margin-left:auto;font:800 14px var(--px);background:var(--ink);color:#fff;border-radius:999px;padding:5px 12px}
+.tr-count b{color:var(--pink-2)}
+.tr-bar{height:10px;border-radius:10px;background:#fff;margin:14px 0 16px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.tr-bar i{display:block;height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .5s ease}
+.check.on{background:linear-gradient(160deg,#fff,#ffe3f1)}
+.check.on span:first-child{text-decoration:line-through;text-decoration-color:var(--pink);text-decoration-thickness:2px;color:var(--ink-2)}
+.tracker.full .tr-count{background:linear-gradient(180deg,#ff8ccb,#ff2e97)}
+.tracker.full .tr-count b{color:#fff}
+.tracker.at-end{margin-top:34px}
+.lesson-bars{display:grid;gap:7px;margin:4px 0 16px;max-width:420px}
+.lb{display:grid;grid-template-columns:118px 1fr 44px;align-items:center;gap:10px;font-size:13px;font-weight:700;text-align:left;cursor:pointer;border:none;background:none;color:var(--ink);padding:0}
+.lb i{display:block;height:8px;border-radius:8px;background:#fff;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
+.lb i u{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .5s}
+.lb em{font-style:normal;color:var(--ink-3);text-align:right}
+
+/* lesson 6: montage (from neuropedalirovanie) */
+.skills.wide,.lesson[data-lesson="7"] .skills:not(:first-of-type){grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.skill:not(.key){background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.skill .cmd{width:100%;margin-top:4px}
+.skill a{font-size:13px;font-weight:800;color:var(--blue);text-decoration:none}
+.tag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:var(--pink-soft);color:#c21a72}
+.tag.b{background:var(--blue-soft);color:#1468b8}
+.tag.g{background:#dff5e6;color:#2b7a45}
+.tag.l{background:#ece6fb;color:#6a4bb8}
+.tree{font:14px/1.95 "JetBrains Mono",ui-monospace,monospace;background:var(--code);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-top:12px;overflow-x:auto;white-space:nowrap}
+.tree .f{color:var(--pink);font-weight:600}
+.tree .c{color:var(--ink-3)}
+.mark{background:linear-gradient(transparent 55%,var(--pink-soft) 55%);padding:0 2px}
+.conn-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+.conn-head h3{margin-bottom:2px}
+.conn-ico{flex:none;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:#fff;box-shadow:inset 0 2px 0 #fff,inset 0 -4px 0 rgba(12,12,16,.06),0 8px 16px rgba(40,30,80,.12)}
+.card code{font:12.5px "JetBrains Mono",monospace;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:2px 6px;word-break:break-all}
+.skill .dl{margin-top:auto;padding:9px 14px;font-size:13px}
+/* help */
+.faq{display:grid;gap:10px;margin-top:20px}
+.qa{border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.qa summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 18px;font-weight:800;font-size:15.5px}
+.qa summary::-webkit-details-marker{display:none}
+.qa .pm{margin-left:auto;flex:none;width:28px;height:28px;border-radius:50%;background:var(--pink-soft);position:relative;transition:.25s}
+.qa .pm::before,.qa .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--pink);border-radius:2px;transform:translate(-50%,-50%)}
+.qa .pm::after{transform:translate(-50%,-50%) rotate(90deg);transition:.25s}
+.qa[open] .pm{background:var(--pink)}
+.qa[open] .pm::before,.qa[open] .pm::after{background:#fff}
+.qa[open] .pm::after{transform:translate(-50%,-50%) rotate(0)}
+.qa p{padding:0 18px 18px;color:var(--ink-2);font-size:15px}
+.qa a{color:var(--pink)}
+.note a{color:inherit}
+/* favorites */
+.star{flex:none;width:34px;height:34px;border-radius:11px;border:none;cursor:pointer;font-size:17px;line-height:1;color:var(--ink-3);background:#f4f4f7;transition:.2s}
+.star:hover{color:var(--pink);transform:scale(1.08)}
+.star svg{width:18px;height:18px;display:block;margin:auto}
+.star.on path{fill:currentColor}
+.star.on{color:#fff;background:linear-gradient(180deg,#ff8ccb,#ff2e97);box-shadow:0 4px 10px rgba(255,46,151,.35)}
+.prompt-top .star{margin-left:auto}
+.prompt-top .star+.copy{margin-left:6px}
+.fav-item{margin-bottom:14px}
+.fav-from{display:inline-block;margin-bottom:6px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+/* glossary — stickers */
+.gl-tools{display:grid;gap:12px;margin-bottom:22px}
+.gl-search{width:100%;font:600 16px Manrope,sans-serif;padding:14px 18px;border-radius:18px;border:1.5px solid #fff;background:rgba(255,255,255,.9);box-shadow:var(--shadow);outline:none}
+.gl-search:focus{border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-soft)}
+.gl-chips{display:flex;flex-wrap:wrap;gap:8px}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:38px 28px;padding:22px 10px 14px}
+.term{position:relative;transform:rotate(-2.2deg);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.term:nth-child(4n+2){transform:rotate(1.5deg)}
+.term:nth-child(4n+3){transform:rotate(-.8deg)}
+.term:nth-child(4n){transform:rotate(2.6deg)}
+.term:hover{transform:rotate(0) scale(1.05);z-index:3}
+/* lifted-corner shadow */
+.term::after{content:"";position:absolute;z-index:-1;right:8px;bottom:12px;width:55%;height:30%;background:rgba(40,30,60,.5);filter:blur(9px);transform:rotate(4deg) skewX(8deg)}
+.term::before{content:"";position:absolute;z-index:-1;left:8px;bottom:12px;width:45%;height:24%;background:rgba(40,30,60,.32);filter:blur(8px);transform:rotate(-3deg) skewX(-8deg)}
+.st{position:relative;display:flex;flex-direction:column;gap:6px;height:100%;min-height:210px;padding:34px 22px 24px;color:#2a2a33;background-color:#ffcfe6;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 30%,rgba(0,0,0,.05)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");box-shadow:0 1px 1px rgba(0,0,0,.12)}
+/* tape */
+.st::before{content:"";position:absolute;top:-13px;left:50%;width:96px;height:28px;transform:translateX(-50%) rotate(-3deg);
+  background:repeating-linear-gradient(135deg,rgba(255,46,151,.55) 0 8px,rgba(255,150,205,.55) 8px 16px);box-shadow:0 1px 2px rgba(0,0,0,.15);
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 4px,#000 calc(100% - 4px),transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 4px,#000 calc(100% - 4px),transparent 100%)}
+/* 2 — notebook page */
+.term:nth-child(4n+2) .st{padding-left:44px;background-color:#fdfdff;
+  background-image:radial-gradient(circle at 16px 13px,#f7f7fa 5px,rgba(0,0,0,.12) 5.5px,transparent 6.5px),linear-gradient(90deg,transparent 33px,rgba(255,46,151,.45) 33px 34.5px,transparent 34.5px),repeating-linear-gradient(180deg,transparent 0 25px,rgba(30,155,255,.35) 25px 26px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:100% 26px,auto,auto,auto}
+.term:nth-child(4n+2) .st::before{background:repeating-linear-gradient(135deg,rgba(30,155,255,.5) 0 8px,rgba(150,210,255,.55) 8px 16px);transform:translateX(-50%) rotate(2deg)}
+/* 3 — yellow sticky with folded corner */
+.term:nth-child(4n+3) .st{background-color:#fff0a0;clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%)}
+.term:nth-child(4n+3) .st::before{top:auto;bottom:0;left:auto;right:0;width:30px;height:30px;transform:none;background:linear-gradient(135deg,#e6d27a 0%,#fff7c8 60%);box-shadow:-2px -2px 4px rgba(0,0,0,.15);-webkit-mask:none;mask:none}
+/* 4 — grid paper, corner tape */
+.term:nth-child(4n) .st{background-color:#fff;
+  background-image:linear-gradient(rgba(30,155,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(30,155,255,.2) 1px,transparent 1px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:20px 20px,20px 20px,auto}
+.term:nth-child(4n) .st::before{left:-22px;top:6px;width:86px;transform:rotate(-38deg);background:repeating-linear-gradient(135deg,rgba(255,46,151,.5) 0 8px,rgba(255,150,205,.5) 8px 16px)}
+.term .em{position:absolute;right:12px;top:10px;z-index:2;font-size:26px;transform:rotate(12deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.term .tag{align-self:flex-start;background:none;padding:0;border-radius:0;font-size:10px;letter-spacing:.18em;color:rgba(42,42,51,.5)}
+.term h4{font:700 30px/1.05 Caveat,"Marker Felt",cursive;color:#16161c;text-transform:none;letter-spacing:0;word-spacing:normal;text-shadow:none;padding-right:26px}
+.term:nth-child(4n+2) h4{color:#1468b8}
+.term:nth-child(4n) h4{color:var(--pink)}
+.term p{font-size:14.5px;line-height:26px;font-weight:600;color:rgba(42,42,51,.82)}
+.term:not(:nth-child(4n+2)) p{line-height:1.45}
+.finder .ficon{width:80px;height:66px}
+/* finish */
+.done-card{display:flex;align-items:center;gap:28px;padding:28px;border-radius:32px;background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(255,236,247,.9));border:1.5px solid #fff;box-shadow:var(--shadow)}
+.ring{position:relative;flex:none;width:130px;height:130px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bg{fill:none;stroke:#fff;stroke-width:13}
+.ring .fg{fill:none;stroke:url(#rg);stroke-width:13;stroke-linecap:round;stroke-dasharray:345;stroke-dashoffset:345;transition:stroke-dashoffset .7s ease}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:400 18px var(--pixel)}
+.done-card h3{font:800 20px/1.3 var(--px);text-transform:uppercase}
+.done-card p{color:var(--ink-2);font-weight:600;margin:6px 0 14px}
+
+/* footer */
+footer{padding:50px 0 90px;text-align:center}
+.sign{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:40px;font-size:14px;font-weight:600;letter-spacing:.55em;text-transform:uppercase}
+.sign::before,.sign::after{content:"";width:90px;height:1.5px;background:var(--ink)}
+
+/* misc */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;font:700 14px Manrope,sans-serif;padding:12px 22px;border-radius:999px;transition:.25s;pointer-events:none;z-index:70}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.heart-fly{position:fixed;pointer-events:none;z-index:70;color:var(--pink);font-size:17px;animation:fly .9s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),-80px) scale(.5);opacity:0}}
+.totop{position:fixed;right:18px;bottom:22px;z-index:45;width:54px;height:54px;border:none;cursor:pointer;color:var(--pink);font:800 18px var(--px);opacity:0;transform:translateY(16px);transition:.25s}
+.totop.show{opacity:1;transform:none}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.count{text-decoration:none}
+@media (max-width:860px){
+  .folders{grid-template-columns:repeat(9,minmax(104px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;padding:16px 10px 14px;scrollbar-width:none}
+  .ficon{width:76px;height:62px}
+  .finder-count{display:none}
+  .folders::-webkit-scrollbar{display:none}
+  .folder-btn{scroll-snap-align:start}
+  .hero-grid{grid-template-columns:1fr}
+  .stage{height:330px;max-width:420px}
+  .alg{grid-template-columns:repeat(2,1fr)}
+  .skills{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:720px){
+  .grid2{grid-template-columns:1fr}
+  .sub{margin-left:0}
+  .nav{display:none}
+  .count{margin-left:auto}
+  .bento{grid-template-columns:1fr 1fr}
+  .tile{min-height:132px}
+  .done-btn{margin-left:0}
+  .done-card{flex-direction:column;text-align:center}
+  .meta-tags{font-size:10.5px;gap:10px;letter-spacing:.16em}
+  .meta-tags span+span::before{margin-right:10px}
+  .toggle-card{width:236px}
+  .claude-key{width:112px;height:112px;top:120px;right:0}
+  .cursor3d{top:212px;right:-8px}
+  .sign{letter-spacing:.35em;font-size:12px;gap:12px}
+  .sign::before,.sign::after{width:36px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+}
+/* ===== iPhone ===== */
+html{-webkit-text-size-adjust:100%}
+button,a{-webkit-tap-highlight-color:transparent}
+.tabbar{display:none}
+@media (max-width:720px){
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .wrap{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .bar{top:max(8px,env(safe-area-inset-top))}
+  .hero{padding-top:30px}
+  .hero-grid{margin-top:22px;gap:10px}
+  h1 .l1{font-size:13.4vw}
+  h1 .l2{font-size:8.6vw}
+  .lead{font-size:21px}
+  .feat{max-width:none;padding:10px 16px}
+  .feat li{font-size:15px;gap:12px}
+  .stage{height:250px;max-width:none;margin-top:6px}
+  .toggle-card{width:205px;padding:10px 12px;border-radius:20px;gap:10px}
+  .toggle-card .ico{width:38px;height:38px;border-radius:12px}
+  .toggle-card b{font-size:13.5px}
+  .toggle-card:nth-of-type(1){top:10px!important}
+  .toggle-card:nth-of-type(2){top:92px!important;left:8%!important}
+  .toggle-card:nth-of-type(3){top:174px!important}
+  .stage .sw{width:50px;height:28px}
+  .stage .sw::after{width:22px;height:22px}
+  .stage .sw.on::after{left:25px}
+  .claude-key{width:100px;height:100px;top:70px;right:2px}
+  .claude-key svg.star8{width:44px;height:44px}
+  .claude-key small{font-size:14px;bottom:10px}
+  .cursor3d{top:150px;right:-4px;width:52px}
+  .stage .bubble,.stage .ticks{display:none}
+  .marquee{margin-top:14px;padding:10px 0}
+  .marquee .track span{font-size:14px;gap:16px;padding-right:16px}
+  /* folders: iOS home-screen grid */
+  .finder{margin-top:30px;border-radius:24px}
+  .finder-bar{padding:10px 14px}
+  .finder-title{font-size:12.5px}
+  .folders{grid-template-columns:repeat(3,1fr)!important;overflow:visible!important;padding:14px 8px 12px!important;gap:6px 2px}
+  .folder-btn{padding:10px 2px 10px;min-height:44px}
+  .finder .ficon{width:72px;height:59px}
+  .flabel{font-size:12.5px;padding:2px 6px}
+  /* sections */
+  section{padding-top:34px}
+  .sec-head{flex-wrap:nowrap;gap:12px;align-items:center}
+  .num{width:50px;height:50px;font-size:14px!important;border-radius:16px}
+  .kicker{font-size:10.5px;letter-spacing:.14em;margin-bottom:4px}
+  h2{font-size:5.3vw;line-height:1.35}
+  .sub{margin:12px 0 18px;font-size:15px}
+  .tracker{padding:16px;border-radius:24px}
+  .checks{grid-template-columns:1fr;gap:8px}
+  .check{min-height:52px;padding:10px 14px}
+  .card{padding:18px;border-radius:24px}
+  .card h3{font-size:17.5px}
+  .block{margin-top:24px}
+  .tabs{display:flex;width:100%;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:1;white-space:nowrap;padding:11px 14px}
+  .prompt-top{flex-wrap:wrap;row-gap:8px}
+  .prompt-top span{flex:1;min-width:0}
+  .copy{padding:10px 15px}
+  .star{width:38px;height:38px}
+  pre{padding:14px;font-size:12.5px}
+  .cmd{flex-wrap:wrap}
+  .cmd code{flex-basis:100%;padding:4px 2px}
+  .btn{padding:13px 18px}
+  .links .btn{flex:1 1 auto;justify-content:center}
+  .tbl th,.tbl td{padding:10px}
+  .chooser{gap:8px}
+  .chooser p{flex-basis:100%}
+  .chip{flex:1;padding:12px 10px;font-size:13.5px}
+  .skills{grid-template-columns:1fr 1fr!important}
+  .skill{padding:14px}
+  .alg{grid-template-columns:1fr 1fr}
+  .next{padding:14px;border-radius:22px}
+  .next .btn{flex:1 1 100%;margin:0!important;justify-content:center}
+  .next span{flex-basis:100%;margin:0}
+  .gl-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:2px 14px}
+  .gl-chips::-webkit-scrollbar{display:none}
+  .gl-chips .chip{flex:none}
+  .gloss{grid-template-columns:1fr;gap:30px;padding:18px 8px 10px}
+  .st{min-height:0}
+  .done-card{padding:20px;gap:16px;border-radius:26px}
+  .lesson-bars{max-width:none}
+  .lb{grid-template-columns:104px 1fr 40px}
+  .qa summary{padding:15px 16px;font-size:15px}
+  footer{padding:36px 0 30px}
+  .totop{display:none}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom));white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+  /* iOS tab bar */
+  .tabbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:55;display:grid;grid-template-columns:repeat(5,1fr);padding:6px;border-radius:26px;
+    background:rgba(255,255,255,.78);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);border:1px solid rgba(255,255,255,.95);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 14px 34px rgba(40,30,80,.2)}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px 5px;border-radius:20px;text-decoration:none;color:var(--ink-3);font:600 10.5px -apple-system,BlinkMacSystemFont,Manrope,sans-serif;transition:.2s}
+  .tabbar svg{width:23px;height:23px}
+  .tabbar a.act{color:var(--pink);background:var(--pink-soft)}
+}
+html,body{overflow-x:hidden;overflow-x:clip;max-width:100%}
+@media (max-width:720px){
+  .hero{padding-top:22px;overflow-x:clip}
+  .meta-tags{display:none}
+  .gpill{font-size:12px;padding:8px 18px}
+  .hero-grid{margin-top:18px;gap:14px}
+  h1{line-height:1.1}
+  h1 .l1{font-size:min(12.4vw,54px)}
+  h1 .l2{font-size:min(8vw,35px);margin-top:4px}
+  .lead{font-size:19px;margin-top:12px}
+  .feat{margin-top:16px}
+  .feat li{padding:5px 0}
+  .stage{height:auto;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .toggle-card{position:static!important;width:auto!important;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 10px;border-radius:20px;animation:none}
+  .toggle-card b{font-size:12.5px;line-height:1.25;min-height:2.5em;flex:none}
+  .claude-key,.cursor3d{display:none}
+  .marquee{margin:18px 0 0;transform:none;border-radius:16px}
+  .finder{margin-top:22px}
+}
+@media (max-width:720px){
+  .bar-in{padding:5px 6px 5px 14px}
+  .brand{font-size:12px}
+  .count{font-size:11px;padding:6px 10px}
+  .hero{padding-top:16px;padding-bottom:10px}
+  .gpill{font-size:10.5px;padding:6px 14px;border-width:1.5px}
+  .hero-grid{margin-top:12px;gap:10px}
+  h1 .l1{font-size:min(10vw,42px)}
+  h1 .l2{font-size:min(6.4vw,27px);margin-top:2px}
+  .lead{font-size:15.5px;margin-top:8px;line-height:1.25}
+  h1{word-spacing:-.35em}
+  .feat{display:none}
+  .stage{gap:6px}
+  .toggle-card{display:grid!important;grid-template-columns:auto 1fr;align-items:center;gap:6px 6px;padding:8px;border-radius:16px}
+  .toggle-card .ico{grid-area:1/1;width:28px;height:28px;border-radius:9px}
+  .toggle-card .ico svg{width:16px;height:16px}
+  .toggle-card .sw{grid-area:1/2;justify-self:end;width:38px!important;height:22px!important}
+  .toggle-card .sw::after{width:16px!important;height:16px!important}
+  .toggle-card .sw.on::after{left:19px!important}
+  .toggle-card b{grid-area:2/1/3/3;font-size:11px;min-height:2.4em;line-height:1.2}
+  .marquee{margin-top:10px;padding:7px 0;border-radius:12px}
+  .marquee .track span{font-size:11.5px;gap:12px;padding-right:12px}
+  .marquee svg{width:10px;height:10px}
+  .finder{margin-top:14px;border-radius:20px}
+  .finder-bar{padding:8px 12px}
+  .lights i{width:10px;height:10px}
+  .folders{padding:10px 6px 8px!important;gap:2px!important}
+  .folder-btn{padding:8px 2px 8px;gap:2px}
+  .finder .ficon{width:58px;height:48px}
+  .ficon .glyph{width:19px;height:19px}
+  .flabel{font-size:12px;margin-top:3px}
+  .folder-btn .fn{font-size:10px}
+  .fbar{width:40px;height:3px;margin-top:2px}
+}
+/* phone hero: laptop in the sky */
+.kick,.tiny{display:none}
+@media (max-width:720px){
+  .hero .hero-grid{display:block;position:relative;overflow:hidden;margin-top:14px;padding:46px 16px 26px;border-radius:34px;border:2px solid rgba(255,255,255,.9);box-shadow:0 22px 44px -14px rgba(30,155,255,.6);
+    background:radial-gradient(60px 22px at 14% 7%,#fff 0,rgba(255,255,255,.85) 55%,transparent 100%),radial-gradient(36px 15px at 30% 10%,#fff 0,rgba(255,255,255,.8) 55%,transparent 100%),
+      radial-gradient(80px 28px at 98% 34%,rgba(255,255,255,.9) 0,rgba(255,255,255,.7) 55%,transparent 100%),radial-gradient(90px 30px at 0% 58%,rgba(255,255,255,.9) 0,rgba(255,255,255,.65) 55%,transparent 100%),
+      radial-gradient(110px 34px at 70% 97%,#fff 0,rgba(255,255,255,.8) 55%,transparent 100%),radial-gradient(70px 26px at 20% 99%,#fff 0,rgba(255,255,255,.75) 55%,transparent 100%),
+      linear-gradient(180deg,#3f9cff 0%,#79c1ff 55%,#b4dfff 100%)}
+  /* screen */
+  .hero .hero-grid>div:first-child{position:relative;z-index:1;margin:0 8px;padding:40px 8px 58px;text-align:center;border:7px solid #17171c;border-bottom-width:9px;border-radius:16px 16px 5px 5px;
+    background-color:#fbfbfe;background-image:radial-gradient(rgba(12,12,16,.12) 1px,transparent 1.2px);background-size:14px 14px;box-shadow:0 18px 30px -10px rgba(10,60,130,.45)}
+  .hero .hero-grid>div:first-child::before{content:"● ГАЙД";position:absolute;left:10px;top:9px;font:800 9.5px Manrope,sans-serif;letter-spacing:.12em;color:var(--ink);border:1.5px solid var(--pink-2);border-radius:999px;padding:3px 9px;background:#fff}
+  .hero .hero-grid>div:first-child::after{content:"";position:absolute;left:50%;top:-1px;width:44px;height:7px;transform:translateX(-50%);border-radius:0 0 6px 6px;background:#17171c}
+  /* keyboard */
+  .hero .hero-grid::after{content:"";display:block;position:relative;z-index:1;height:50px;margin:0 -2px;border-radius:3px 3px 14px 14px;transform:perspective(260px) rotateX(38deg);transform-origin:top;
+    background:linear-gradient(#26262c,#26262c) center 7px/74% 20px no-repeat,linear-gradient(#b3b3c0,#b3b3c0) center 33px/30% 11px no-repeat,linear-gradient(180deg,#d6d6e0,#9f9fae);box-shadow:0 14px 18px -6px rgba(10,60,130,.45)}
+  .kick{display:block;font:800 17px/1.1 Manrope,sans-serif;text-transform:uppercase;letter-spacing:-.01em;color:var(--ink)}
+  .tiny{display:block;margin-top:10px;font:700 9.5px/1.4 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+  .hero h1{margin-top:6px}
+  .hero h1 .l1{color:var(--pink);font-size:min(10.4vw,46px);text-shadow:0 0 18px rgba(255,46,151,.4)}
+  .hero h1 .l2{display:inline-block;color:var(--ink);font-size:min(4.5vw,20px);margin-top:10px;padding:8px 16px;border-radius:999px;background:linear-gradient(180deg,#fff,#eaf4ff);border:1.5px solid #fff;text-shadow:none;
+    box-shadow:inset 0 2px 0 #fff,0 0 0 1px rgba(30,155,255,.25),0 8px 16px rgba(30,155,255,.25)}
+  .hero .lead{display:none}
+  /* floating cards */
+  .hero .stage{position:absolute;inset:0;z-index:2;display:block;height:auto;margin:0;pointer-events:none}
+  .hero .stage .toggle-card{display:flex!important;position:absolute!important;flex-direction:row;align-items:center;width:150px!important;padding:8px 9px;gap:7px;border-radius:18px;
+    background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(255,230,244,.72));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 2px 0 #fff,0 0 0 1px rgba(255,255,255,.7),0 14px 24px rgba(10,60,130,.3)}
+  .hero .stage .toggle-card b{font-size:11px;min-height:0;flex:1;line-height:1.15}
+  .hero .stage div.toggle-card:nth-of-type(1){top:14px!important;right:6px;left:auto!important;transform:rotate(5deg)}
+  .hero .stage div.toggle-card:nth-of-type(2){top:auto!important;bottom:74px;left:4px!important;transform:rotate(-5deg)}
+  .hero .stage div.toggle-card:nth-of-type(3){top:auto!important;bottom:52px;right:4px;left:auto!important;transform:rotate(4deg)}
+  .hero .claude-key{display:grid;position:absolute;right:2px;top:38%;width:58px;height:58px;border-radius:18px;transform:rotate(9deg);animation:none;
+    background:linear-gradient(160deg,#ffb199,#f2603c);box-shadow:inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(150,40,10,.2),0 12px 20px rgba(240,96,60,.45)}
+  .hero .claude-key svg.star8{width:32px;height:32px;color:#fff}
+  .hero .claude-key small{display:none}
+  .hero .cursor3d{display:block;right:-2px;top:calc(38% + 40px);width:36px;animation:none}
+}
+/* phone hero: big MacBook on sky (variant 2) */
+@media (max-width:720px){
+  .hero .hero-grid{padding:44px 6px 50px}
+  .hero .hero-grid>div:first-child{margin:0 8px;padding:36px 8px 64px;border:6px solid #0d0d11;border-bottom-width:7px;border-radius:15px 15px 3px 3px;box-shadow:0 0 0 1.5px #c3c3cf,0 20px 30px -12px rgba(10,60,130,.5)}
+  .hero .hero-grid>div:first-child::before{display:none}
+  .hero .hero-grid::after{height:13px;margin:0 -2px;transform:none;border-radius:2px 2px 14px 14px;background:linear-gradient(#9a9aa9,#b5b5c2) center top/70px 5px no-repeat,linear-gradient(180deg,#f0f0f5 0%,#c9c9d5 45%,#9d9dac 100%);box-shadow:0 18px 20px -6px rgba(10,60,130,.55)}
+  .hero .kick{font-size:20px}
+  .hero h1 .l1{font-size:min(11.8vw,51px)}
+  .hero h1 .l2{font-size:min(5vw,21px);color:var(--blue)}
+  .hero .stage .bubble{display:block}
+  .hero .stage .bubble.b{display:none}
+  .hero .stage div.toggle-card:nth-of-type(1){top:12px!important;right:0}
+  .hero .stage div.toggle-card:nth-of-type(2){bottom:66px;left:0!important}
+  .hero .stage div.toggle-card:nth-of-type(3){bottom:40px;right:0}
+  .hero .claude-key{top:44%}
+  .hero .cursor3d{top:calc(44% + 40px)}
+}
+/* phone hero: floating in the clouds */
+@keyframes hover{0%,100%{transform:translate(0,0) rotate(var(--r,0deg))}50%{transform:translate(var(--dx,3px),-10px) rotate(calc(var(--r,0deg) + var(--dr,1.5deg)))}}
+@keyframes sky{from{background-position:0 0}to{background-position:22px 0}}
+@media (max-width:720px){
+  .hero .hero-grid{animation:sky 9s ease-in-out infinite alternate}
+  .hero .stage .toggle-card{animation:hover 5.2s ease-in-out infinite!important;will-change:transform}
+  .hero .stage div.toggle-card:nth-of-type(1){--r:5deg;--dx:-3px;--dr:-1.5deg}
+  .hero .stage div.toggle-card:nth-of-type(2){--r:-5deg;--dx:4px;animation-duration:6.1s!important;animation-delay:-2s!important}
+  .hero .stage div.toggle-card:nth-of-type(3){--r:4deg;--dx:-2px;--dr:-1deg;animation-duration:5.6s!important;animation-delay:-3.4s!important}
+  .hero .claude-key{--r:9deg;--dr:4deg;animation:hover 4.6s ease-in-out infinite -1s}
+  .hero .cursor3d{--dx:-3px;animation:hover 4.6s ease-in-out infinite -1.3s}
+  .hero .stage .bubble{animation:float 5s ease-in-out infinite}
+}
+@media (max-width:380px){
+  .skills{grid-template-columns:1fr!important}
+  .alg{grid-template-columns:1fr}
+  .toggle-card{width:190px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#ff7cc2"/><stop offset="1" stop-color="#1e9bff"/></linearGradient>
+    <linearGradient id="fbB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aaef0"/><stop offset="1" stop-color="#3b8fdc"/></linearGradient>
+    <linearGradient id="ffB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fcbff"/><stop offset=".12" stop-color="#76bdfb"/><stop offset="1" stop-color="#4ea4ef"/></linearGradient>
+    <linearGradient id="fbP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6fb4"/><stop offset="1" stop-color="#e81d82"/></linearGradient>
+    <linearGradient id="ffP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb1d8"/><stop offset=".12" stop-color="#ff8cc6"/><stop offset="1" stop-color="#ff4fa6"/></linearGradient>
+  </defs>
+  <symbol id="fback" viewBox="0 0 96 78"><path d="M7 4h26c2.2 0 4.2 1 5.5 2.8L42 11h47a7 7 0 0 1 7 7v53a7 7 0 0 1-7 7H7a7 7 0 0 1-7-7V11a7 7 0 0 1 7-7z"/></symbol>
+  <symbol id="ffront" viewBox="0 0 96 78"><path d="M0 26a7 7 0 0 1 7-7h82a7 7 0 0 1 7 7v45a7 7 0 0 1-7 7H7a7 7 0 0 1-7-7z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0z" fill="currentColor"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path d="M6 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L7.5 3.64A1 1 0 0 0 6 4.5z" fill="currentColor"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="currentColor"/><path d="M7 8h10M7 12h7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></g></symbol>
+  <symbol id="card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" fill="currentColor"/><path d="M2 10h20" stroke="#fff" stroke-width="2"/><path d="M6 15h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" fill="currentColor"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm9 4c0-.6-.1-1.2-.2-1.7l2-1.6-2-3.4-2.4 1a8 8 0 0 0-3-1.7L15 2h-4l-.4 2.6a8 8 0 0 0-3 1.7l-2.4-1-2 3.4 2 1.6a8 8 0 0 0 0 3.4l-2 1.6 2 3.4 2.4-1a8 8 0 0 0 3 1.7L11 22h4l.4-2.6a8 8 0 0 0 3-1.7l2.4 1 2-3.4-2-1.6c.1-.5.2-1.1.2-1.7z" fill="currentColor"/></symbol>
+  <symbol id="folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="currentColor"/></symbol>
+  <symbol id="plug" viewBox="0 0 24 24"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="pen" viewBox="0 0 24 24"><path d="M15.5 3.5l5 5L8 21H3v-5z" fill="currentColor"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3" fill="currentColor"/><path d="M8 8h8M8 12h8M8 16h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="currentColor"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z" fill="currentColor"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 11v6M12 7.5v.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.6L6 21z" fill="currentColor"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="star8" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></g></symbol>
+</svg>
+
+<div class="progress"><i id="prog"></i></div>
+
+<div class="bar"><div class="bar-in">
+  <div class="brand">НЕЙРО<em>ПЕДАЛИРОВАНИЕ</em></div>
+  <nav class="nav" id="nav">
+    <a href="#l1" data-go="1">Оплата</a><a href="#l2" data-go="2">Настройка</a><a href="#l3" data-go="3">MCP</a><a href="#l4" data-go="4">Промпты</a><a href="#l5" data-go="5">Опросник</a><a href="#l7" data-go="7">Скиллы</a><a href="#l8" data-go="8">Инструменты</a><a href="#l6" data-go="6">Словарь</a><a href="#l9" data-go="9">Сохранённое</a>
+  </nav>
+  <a class="count" href="#finish" title="Общий прогресс"><b id="cnt">0%</b> готово</a>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="meta">
+    <span class="gpill">воркбук / 01</span>
+    <div class="meta-tags"><span>Claude</span><span>ChatGPT</span><span>MCP</span><svg><use href="#star"/></svg></div>
+  </div>
+
+  <div class="hero-grid">
+    <div>
+      <p class="kick">Настройка AI</p>
+      <h1><span class="l1">Claude</span><span class="l2">и ChatGPT</span></h1>
+      <p class="tiny">под себя · все промпты в одном месте</p>
+      <p class="lead">Настройка AI под себя <svg><use href="#star"/></svg><br>все промпты в одном месте</p>
+      <ul class="feat">
+        <li><svg><use href="#play"/></svg>Оплата и регистрация из России</li>
+        <li><svg><use href="#chat"/></svg>Промпты, проекты и база знаний</li>
+        <li><svg><use href="#star"/></svg>Скиллы, плагины, MCP и коннекторы</li>
+      </ul>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <span class="bubble" style="width:28px;height:28px;left:6%;top:6px"></span>
+      <span class="bubble b" style="width:18px;height:18px;left:58%;top:118px;animation-delay:1.4s"></span>
+      <span class="bubble" style="width:40px;height:40px;left:20%;bottom:0;animation-delay:2s"></span>
+      <span class="ticks" style="right:120px;top:120px"><i></i><i></i><i></i></span>
+
+      <div class="toggle-card" style="left:0;top:40px"><div class="ico b"><svg><use href="#globe"/></svg></div><b>VPN</b><button class="sw on demo" type="button" tabindex="-1"></button></div>
+      <div class="toggle-card" style="left:6%;top:150px;animation-delay:1.2s"><div class="ico"><svg><use href="#chat"/></svg></div><b>Номер<br>для СМС</b><button class="sw on demo" type="button" tabindex="-1"></button></div>
+      <div class="toggle-card" style="left:0;top:262px;animation-delay:2.1s"><div class="ico b"><svg><use href="#card"/></svg></div><b>Оплата<br>подписки</b><button class="sw demo" type="button" tabindex="-1"></button></div>
+
+      <div class="key claude-key"><svg class="star8"><use href="#star8"/></svg><small>Claude</small></div>
+      <svg class="cursor3d" viewBox="0 0 24 24"><path d="M3 2l17 9-7.5 1.8L9 20z" fill="#ffd1e8" stroke="#ff2e97" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true"><div class="track">
+    <span>Claude <svg><use href="#star"/></svg> ChatGPT <svg><use href="#star"/></svg> Промпты <svg><use href="#star"/></svg> Скиллы <svg><use href="#star"/></svg> MCP <svg><use href="#star"/></svg> Коннекторы <svg><use href="#star"/></svg> Автоматизация <svg><use href="#star"/></svg></span>
+    <span>Claude <svg><use href="#star"/></svg> ChatGPT <svg><use href="#star"/></svg> Промпты <svg><use href="#star"/></svg> Скиллы <svg><use href="#star"/></svg> MCP <svg><use href="#star"/></svg> Коннекторы <svg><use href="#star"/></svg> Автоматизация <svg><use href="#star"/></svg></span>
+  </div></div>
+
+  <div class="finder" id="folders">
+    <div class="finder-bar"><span class="lights"><i></i><i></i><i></i></span><span class="finder-title"><svg><use href="#folder"/></svg>Воркбук 01 — Claude и ChatGPT</span><span class="finder-count">9 папок</span></div>
+    <div class="folders">
+      <button class="folder-btn" data-go="1" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#card"/></svg></span>
+        <span class="flabel">Оплата</span><span class="fn">Урок 01</span>
+        <span class="fbar"><i data-fbar="1"></i></span>
+      </button>
+      <button class="folder-btn" data-go="2" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#user"/></svg></span>
+        <span class="flabel">Настройка</span><span class="fn">Урок 02</span>
+        <span class="fbar"><i data-fbar="2"></i></span>
+      </button>
+      <button class="folder-btn" data-go="3" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#plug"/></svg></span>
+        <span class="flabel">MCP и сервисы</span><span class="fn">Урок 03</span>
+        <span class="fbar"><i data-fbar="3"></i></span>
+      </button>
+      <button class="folder-btn" data-go="4" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#pen"/></svg></span>
+        <span class="flabel">Промпты</span><span class="fn">Урок 04</span>
+        <span class="fbar"><i data-fbar="4"></i></span>
+      </button>
+      <button class="folder-btn" data-go="5" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#list"/></svg></span>
+        <span class="flabel">Опросник</span><span class="fn">Урок 05</span>
+        <span class="fbar"><i data-fbar="5"></i></span>
+      </button>
+      <button class="folder-btn" data-go="7" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#star"/></svg></span>
+        <span class="flabel">Скиллы</span><span class="fn">Папка</span>
+        <span class="fbar"><i data-fbar="7"></i></span>
+      </button>
+      <button class="folder-btn" data-go="8" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#gear"/></svg></span>
+        <span class="flabel">Инструменты</span><span class="fn">Папка</span>
+        <span class="fbar"><i data-fbar="8"></i></span>
+      </button>
+      <button class="folder-btn" data-go="6" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#chat"/></svg></span>
+        <span class="flabel">Словарь</span><span class="fn">36 слов</span>
+        <span class="fbar" style="visibility:hidden"><i></i></span>
+      </button>
+      <button class="folder-btn" data-go="9" type="button">
+        <span class="ficon"><svg viewBox="0 0 96 78" aria-hidden="true"><use class="fb" href="#fback"/><rect class="paper" x="8" y="13" width="80" height="22" rx="3"/><use class="ff" href="#ffront"/><path class="shine" d="M7 19.6h82"/></svg><svg class="glyph" aria-hidden="true"><use href="#bookmark"/></svg></span>
+        <span class="flabel">Сохранённое</span><span class="fn" id="favCount">0 промптов</span>
+        <span class="fbar" style="visibility:hidden"><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="lessons">
+
+<!-- ================= LESSON 1 ================= -->
+<section class="lesson on" data-lesson="1" id="l1">
+  <div class="sec-head"><div class="key num">01</div><div><span class="kicker">Урок 1 из 5 · 20–40 минут</span><h2>Оплата <em>и установка</em></h2></div></div>
+  <p class="sub">Тариф → VPN → аккаунт → номер → оплата. <b>Строго по порядку.</b></p>
+
+  <div class="block"><span class="step-tag">Сначала · Что для чего</span>
+  <div class="grid2">
+    <div class="card glass rv">
+      <div class="conn-head"><span class="conn-ico">✳️</span><div><h3>Claude — для больших задач</h3><p>Здесь я делаю <b>монтаж роликов</b> и <b>создаю сайты</b>. Ещё — длинные тексты, проекты со своей базой знаний, скиллы и автоматизация.</p></div></div>
+      <div class="pills"><span>монтаж</span><span>сайты</span><span>тексты в моём стиле</span><span>скиллы</span></div>
+    </div>
+    <div class="card glass b rv">
+      <div class="conn-head"><span class="conn-ico">💬</span><div><h3>ChatGPT — на каждый день</h3><p><b>Повседневные задачи</b>, <b>презентации</b> и <b>картинки</b>. Быстро спросить, набросать идею, сделать визуал.</p></div></div>
+      <div class="pills"><span>быстрые вопросы</span><span>презентации</span><span>картинки</span><span>идеи</span></div>
+    </div>
+  </div>
+  <div class="note"><svg><use href="#heart"/></svg><span>Для старта хватит <b>Claude Pro</b>. ChatGPT можно начать с бесплатной версии.</span></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Тариф</span>
+  <div class="card glass rv">
+    <h3><span class="dot"></span>Выбери тариф</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Сервис</th><th>Для старта</th><th>Цена</th></tr>
+      <tr><td><b>Claude</b></td><td><b class="hl">Pro</b> — проекты, Claude Code, скиллы</td><td><b>$20</b>/мес</td></tr>
+      <tr><td><b>ChatGPT</b></td><td><b class="hl">Plus</b> — проекты, свои GPT, сервисы</td><td><b>$20</b>/мес</td></tr>
+    </table></div>
+    <p style="margin-top:10px">Больше лимитов: Claude Max $100 и Ultra $200, ChatGPT Pro от $100. Цены без налога, проверены 16 ноября 2026.</p>
+    <div class="links">
+      <a class="btn" href="https://claude.com/pricing" target="_blank" rel="noopener">Цены Claude <svg><use href="#arrow"/></svg></a>
+      <a class="btn" href="https://chatgpt.com/pricing" target="_blank" rel="noopener">Цены ChatGPT <svg><use href="#arrow"/></svg></a>
+    </div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · VPN, аккаунт и номер</span>
+  <div class="grid2">
+    <div class="card rv">
+      <h3><span class="dot b"></span>Подключи VPN</h3>
+      <ol class="steps b-steps">
+        <li><b>Платный VPN</b>, не «семейный» на 10 устройств.<span class="why">бесплатные адреса часто в чёрных списках</span></li>
+        <li><b>Страна из списка:</b> Германия, Нидерланды, США.<span class="why">каждый раз одна и та же</span></li>
+        <li>Включай <b>до</b> того, как открыть Claude.</li>
+      </ol>
+      <div class="links"><a class="btn pink" href="https://t.me/NeBankRobot?start=KKKKKKKKATI" target="_blank" rel="noopener">VPN в Небанке <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card rv">
+      <h3><span class="dot"></span>Аккаунт и номер</h3>
+      <ol class="steps">
+        <li>Вход через <b>давнюю Google-почту</b>.<span class="why">новые пустые аккаунты чаще блокируют</span></li>
+        <li>Попросили SMS — нужен <b>номер поддерживаемой страны</b>.<span class="why">проверь, что номер подходит именно для Claude</span></li>
+        <li>ChatGPT — на ту же почту.</li>
+      </ol>
+      <div class="links">
+        <a class="btn" href="https://claude.com/download" target="_blank" rel="noopener">Скачать Claude</a>
+        <a class="btn pink" href="https://t.me/NeBankRobot?start=KKKKKKKKATI" target="_blank" rel="noopener">Номер в Небанке</a>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Оплата</span>
+  <div class="chooser">
+    <p>Оплата — как удобнее?</p>
+    <button class="chip" data-pick="a" type="button">🍏 У меня есть iPhone</button>
+    <button class="chip" data-pick="b" type="button">🩷 Нет iPhone</button>
+  </div>
+  <div class="grid2 variants" id="variants">
+    <div class="card glass b vb" data-var="a">
+      <h3><span class="dot b"></span>Вариант А · гифт-карта Apple</h3>
+      <ol class="steps b-steps">
+        <li><b>App Store → профиль → Подписки → способ оплаты.</b> Заполни данные для выставления счёта, регион — <b>США</b>.<span class="why">данные можно попросить у ChatGPT — промпт ниже</span></li>
+        <li>Открой приложение <b>банка</b> (любой, у меня Т-Банк) → <b>Платежи</b> → в поиске набери <b>Apple</b>.</li>
+        <li>Выбери <b>«Apple карта оплаты USD США»</b>, введи свою <b>почту iCloud</b> и сумму. Два раза «Продолжить».</li>
+        <li>Открой почту iCloud — письмо приходит почти сразу. <b>Скопируй код.</b><span class="why">нет письма — проверь «Спам»</span></li>
+        <li><b>App Store → профиль → «Активировать код» → «Ввести код вручную»</b> → вставь → «Активировать».</li>
+        <li>Открой Claude или ChatGPT на iPhone, <b>выбери подписку</b> и оплати с баланса Apple.</li>
+      </ol>
+      <div class="prompt"><div class="prompt-top"><span>Промпт для ChatGPT</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Дай мне данные для App Store, регион Америка.</pre></div>
+      <div class="links"><a class="btn pink" href="https://youtube.com/shorts/3HtoAMWGHI4" target="_blank" rel="noopener">▶ Видео: всё за 2 минуты</a></div>
+    </div>
+    <div class="card glass" data-var="b">
+      <h3><span class="dot"></span>Вариант Б · Небанк</h3>
+      <ol class="steps">
+        <li><b>Пополни баланс</b> российской картой с запасом.</li>
+        <li>Выбери <b>Claude или ChatGPT</b> и тариф.</li>
+        <li>Оплати, укажи <b>почту своего аккаунта</b>.</li>
+        <li>Включи VPN и проверь тариф.</li>
+      </ol>
+      <div class="links"><a class="btn pink" href="https://t.me/NeBankRobot?start=KKKKKKKKATI" target="_blank" rel="noopener">Открыть Небанк <svg><use href="#arrow"/></svg></a></div>
+    </div>
+  </div>
+  <div class="note"><svg><use href="#info"/></svg><span>Подписка на месяц — пополняй баланс <b>до даты продления</b>. Удаление аккаунта ChatGPT не отменяет подписку в App Store.</span></div>
+  </div>
+
+  <div class="tracker rv at-end" data-tracker="1">
+    <div class="tr-head"><h3>📍 Трекер урока</h3><span class="tr-count"><b>0</b>/6</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="1-tariff" type="button"><span>Выбрала тариф</span><span class="sw"></span></button>
+      <button class="check" data-check="1-vpn" type="button"><span>Подключила VPN</span><span class="sw"></span></button>
+      <button class="check" data-check="1-acc" type="button"><span>Создала аккаунты</span><span class="sw"></span></button>
+      <button class="check" data-check="1-sms" type="button"><span>Номер для СМС</span><span class="sw"></span></button>
+      <button class="check" data-check="1-app" type="button"><span>Скачала приложение</span><span class="sw"></span></button>
+      <button class="check" data-check="1-paid" type="button"><span>Оплатила подписку</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><span>Готово? Дальше —</span><button class="btn pink" data-go="2" type="button">Урок 2 · Настройка и проекты <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= LESSON 2 ================= -->
+<section class="lesson" data-lesson="2" id="l2">
+  <div class="sec-head"><div class="key num b">02</div><div><span class="kicker">Урок 2 из 5 · 30–45 минут</span><h2>Настройка <em>и проекты</em></h2></div></div>
+  <p class="sub">Нейросеть знает, кто ты, — <b>и пишет в твоём стиле.</b></p>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Персонализация</span>
+  <div class="card rv">
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="c" type="button">Claude</button>
+      <button class="tab" data-tab="g" type="button">ChatGPT</button>
+    </div>
+    <div class="pane on" data-pane="c">
+      <ol class="steps"><li><b>Settings → General</b> → personal preferences.</li><li>Вставь шаблон ниже и включи <b>Memory</b>.</li></ol>
+    </div>
+    <div class="pane" data-pane="g">
+      <ol class="steps b-steps"><li><b>Settings → Personalization</b> → Custom instructions.</li><li>Вставь шаблон ниже и проверь <b>Memory</b>.</li></ol>
+    </div>
+    <div class="prompt"><div class="prompt-top"><span>Шаблон о себе</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Меня зовут [имя]. Я [кто ты: эксперт / блогер / владелица бизнеса]
+в нише [ниша].
+Мои клиенты — [кто они в одной фразе].
+Сейчас моя главная задача — [цель].
+
+Как со мной работать:
+— отвечай по-русски, на «ты»;
+— сначала главное, потом детали;
+— без воды и общих фраз;
+— инструкции — по шагам, с объяснением, зачем каждый шаг;
+— если чего-то не хватает для хорошего ответа, сначала задай до 3 вопросов;
+— если не знаешь точно — так и скажи, не придумывай факты и цифры.</pre></div>
+    <div class="prompt"><div class="prompt-top"><span>Проверка</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Что ты обо мне знаешь?</pre></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Проект и база знаний</span>
+  <div class="card glass rv">
+    <h3><span class="dot"></span>Зачем нужен проект</h3>
+    <p>Проект — отдельная «комната» под одну задачу. Все чаты внутри видят <b>одни и те же файлы и правила</b>, поэтому не нужно каждый раз заново объяснять, кто ты и как писать.</p>
+    <div class="pills"><span>без проекта — ответы «как у всех»</span><span>с проектом — в твоём стиле</span></div>
+  </div>
+  <div class="card rv">
+    <h3><span class="dot b"></span>Как создать</h3>
+    <div class="tabs" role="tablist"><button class="tab on" data-tab="pc" type="button">Claude</button><button class="tab" data-tab="pg" type="button">ChatGPT</button></div>
+    <div class="pane on" data-pane="pc"><ol class="steps">
+      <li>Слева в меню: <b>Projects → New project</b>.</li>
+      <li>Назови по задаче: «Контент · Instagram», «Продажи · курс».</li>
+      <li>Файлы — в <b>Project knowledge</b> (кнопка +).</li>
+      <li>Роль и правила — в <b>Instructions</b>.</li>
+    </ol></div>
+    <div class="pane" data-pane="pg"><ol class="steps b-steps">
+      <li>Слева в меню: <b>New project</b>, дай название.</li>
+      <li>Файлы — через <b>Add files</b>.</li>
+      <li>Роль и правила — настройки проекта → <b>Instructions</b>.</li>
+    </ol></div>
+    <div class="note b"><svg><use href="#info"/></svg><span><b>Один проект = одна задача.</b> Если сложить всё в один, нейросеть начнёт путать правила. На бесплатном Claude — до 5 проектов.</span></div>
+  </div>
+  <div class="card glass b rv">
+    <h3><span class="dot b"></span>Что загрузить в базу знаний</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Файл</th><th>Что внутри</th></tr>
+      <tr><td><b>Обо мне и бренде</b></td><td>кто ты, история, ценности, чем отличаешься</td></tr>
+      <tr><td><b>Аудитория</b></td><td>кто клиенты, их боли, страхи, цитаты из отзывов</td></tr>
+      <tr><td><b>Продукты</b></td><td>что продаёшь, состав, цены, как купить</td></tr>
+      <tr><td><b>Голос бренда</b></td><td>как ты говоришь, любимые и запретные слова</td></tr>
+      <tr><td><b>Примеры текстов</b></td><td>5–10 твоих лучших постов и сценариев</td></tr>
+      <tr><td><b>Отзывы и кейсы</b></td><td>с цифрами, без фамилий и телефонов</td></tr>
+    </table></div>
+    <div class="pills"><span>один файл — одна тема</span><span>PDF · DOCX · TXT · MD</span><span>текст лучше скриншотов</span></div>
+    <div class="note"><svg><use href="#info"/></svg><span>Не клади пароли, данные карт, паспорт и контакты клиентов.</span></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Роль и инструкции проекта</span>
+  <div class="card glass rv">
+    <h3><span class="dot"></span>Как задать роль</h3>
+    <p>Файлы — это «что знать». Инструкции — «кем быть и как работать». Собери их по формуле и вставь в <b>Instructions</b>:</p>
+    <div class="formula"><span>Роль</span><span>Задача</span><span>Файлы</span><span>Стиль</span><span>Запреты</span><span>Формат</span></div>
+  </div>
+  <div class="card rv">
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="content" type="button">Пример «Контент»</button>
+      <button class="tab" data-tab="sales" type="button">Пример «Продажи»</button>
+    </div>
+    <div class="pane on" data-pane="content">
+      <div class="prompt"><div class="prompt-top"><span>Instructions</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Ты — мой контент-продюсер и редактор с опытом в Instagram.
+
+ЗАДАЧА
+Помогать придумывать и писать посты, сценарии рилс и сторис,
+которые приводят подписчиков и заявки на мои продукты.
+
+НА ЧТО ОПИРАТЬСЯ
+— «Обо мне и бренде» и «Аудитория» — для смысла;
+— «Голос бренда» и примеры текстов — для стиля;
+— «Продукты» — цены и состав бери только оттуда.
+
+СТИЛЬ
+Живой разговорный язык, короткие фразы, обращение на «ты».
+Пиши как в моих примерах, а не как «типичный блогер».
+
+ЗАПРЕТЫ
+— не придумывай цифры, кейсы и отзывы;
+— без канцелярита и фраз «в современном мире», «не просто X, а Y»;
+— не больше одного эмодзи на абзац.
+
+ФОРМАТ
+Давай 3 варианта хука, потом текст и призыв к действию.
+Если задача непонятна — сначала спроси.</pre></div>
+    </div>
+    <div class="pane" data-pane="sales">
+      <div class="prompt"><div class="prompt-top"><span>Instructions</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Ты — мой менеджер по продажам. Пишешь ответы в директ,
+продающие сообщения и описания продуктов.
+
+Опирайся на файлы «Продукты», «Аудитория» и «Отзывы».
+Цены, состав и сроки бери только из файла «Продукты».
+Если там нет ответа — напиши «нужно уточнить», не придумывай.
+
+Тон: тёплый, уверенный, без давления и капса.
+Сначала покажи, что понял запрос человека, потом предложи решение.
+Ответ в директ — до 500 знаков, один понятный следующий шаг в конце.</pre></div>
+    </div>
+    <div class="prompt"><div class="prompt-top"><span>Проверка проекта</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Перескажи в 5 пунктах, кто я, для кого работаю и как ты должен писать.
+На какие файлы проекта ты опираешься?</pre></div>
+    <div class="note"><svg><use href="#heart"/></svg><span>Не хочешь писать инструкции сама — в Уроке 5 их соберёт опросник.</span></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 4 · Папка проекта и вкладка Code</span>
+  <div class="grid2">
+    <div class="card glass rv">
+      <h3><span class="dot"></span>Зачем нужна папка</h3>
+      <p>Проект из шага 2 живёт в чате. А <b>папка проекта</b> — обычная папка на твоём компьютере, с которой Claude работает во вкладке <b>Code</b>: читает и создаёт файлы, ставит скиллы и инструменты, монтирует ролики и собирает сайты.</p>
+      <div class="pills"><span>чат — тексты и идеи</span><span>Code — файлы, монтаж, сайты</span></div>
+    </div>
+    <div class="card rv">
+      <h3><span class="dot b"></span>Как подключить</h3>
+      <ol class="steps b-steps">
+        <li>Создай на рабочем столе папку, например <b>«ИИ-проект»</b>.</li>
+        <li>Открой <b>приложение</b> Claude на компьютере (не браузер).</li>
+        <li>Вверху выбери вкладку <b>Code</b>.</li>
+        <li>Внизу выбери <b>«Этот компьютер»</b> и свою папку, разреши доступ.</li>
+      </ol>
+      <div class="links"><a class="btn blue" href="https://claude.com/download" target="_blank" rel="noopener">Скачать приложение <svg><use href="#arrow"/></svg></a></div>
+    </div>
+  </div>
+  <div class="prompt"><div class="prompt-top"><span>Проверка</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Покажи, какие папки и файлы ты видишь в этой папке.</pre></div>
+  <div class="note b"><svg><use href="#info"/></svg><span>Всегда открывай сессию с одной и той же папкой — скиллы и настройки живут в ней. Вкладка Code есть на тарифе Claude Pro.</span></div>
+  </div>
+
+  <div class="tracker rv at-end" data-tracker="2">
+    <div class="tr-head"><h3>📍 Трекер урока</h3><span class="tr-count"><b>0</b>/7</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="2-pc" type="button"><span>Персонализация Claude</span><span class="sw"></span></button>
+      <button class="check" data-check="2-pg" type="button"><span>Персонализация ChatGPT</span><span class="sw"></span></button>
+      <button class="check" data-check="2-proj" type="button"><span>Создала проект</span><span class="sw"></span></button>
+      <button class="check" data-check="2-files" type="button"><span>Загрузила файлы</span><span class="sw"></span></button>
+      <button class="check" data-check="2-instr" type="button"><span>Написала инструкции</span><span class="sw"></span></button>
+      <button class="check" data-check="2-code" type="button"><span>Подключила папку в Code</span><span class="sw"></span></button>
+      <button class="check" data-check="2-test" type="button"><span>Проверила проект</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="1" type="button">← Урок 1</button><button class="btn pink" data-go="3" type="button">Урок 3 · Скиллы и MCP <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= LESSON 3 ================= -->
+<section class="lesson" data-lesson="3" id="l3">
+  <div class="sec-head"><div class="key num">03</div><div><span class="kicker">Урок 3 из 5 · 40–60 минут</span><h2>MCP, коннекторы <em>и автоматизация</em></h2></div></div>
+  <p class="sub">Claude работает с твоими сервисами — <b>и делает задачи по-твоему.</b></p>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Что есть что</span>
+  <div class="card glass b rv">
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Что</th><th>Простыми словами</th><th>Когда нужен</th></tr>
+      <tr><td><b>Скилл</b></td><td>инструкция «как делать задачу»</td><td>чтобы делалось «по-твоему»</td></tr>
+      <tr><td><b>Коннектор</b></td><td>ключ от другого сервиса</td><td>данные из Notion, Drive, Gmail</td></tr>
+      <tr><td><b>MCP</b></td><td>«розетка» для коннекторов</td><td>настраивать самой не нужно</td></tr>
+      <tr><td><b>Плагин</b></td><td>скиллы + коннекторы в одной коробке</td><td>всё сразу одной установкой</td></tr>
+    </table></div>
+    <div class="links">
+      <a class="btn blue" href="https://claude.ai/customize" target="_blank" rel="noopener">claude.ai/customize <svg><use href="#arrow"/></svg></a>
+      <a class="btn" href="https://claude.com/docs/extend/overview" target="_blank" rel="noopener">Документация</a>
+    </div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Подключи сервисы</span>
+  <div class="grid2">
+    <div class="card glass b rv">
+      <div class="conn-head"><span class="conn-ico">📝</span><div><h3>Notion</h3><p>Читает и пишет твои страницы: контент-план, база знаний, заметки.</p></div></div>
+      <ol class="steps b-steps"><li><b>claude.ai/customize → Connectors</b>.</li><li>Найди сервис в каталоге → <b>Connect</b>.</li><li>Войди в свой аккаунт <b>сама</b> и выбери доступ.</li></ol>
+      <div class="prompt"><div class="prompt-top"><span>Попробуй</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Найди в моём Notion страницу с контент-планом
+и добавь 5 идей рилс на следующую неделю
+в том же формате. Покажи, что добавила.</pre></div>
+      <div class="links"><a class="btn blue" href="https://claude.ai/customize" target="_blank" rel="noopener">Открыть коннекторы <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass rv">
+      <div class="conn-head"><span class="conn-ico">🎨</span><div><h3>Canva</h3><p>Создаёт и находит дизайны: карусели, обложки, презентации.</p></div></div>
+      <ol class="steps"><li><b>claude.ai/customize → Connectors</b>.</li><li>Найди сервис в каталоге → <b>Connect</b>.</li><li>Войди в свой аккаунт <b>сама</b> и выбери доступ.</li></ol>
+      <div class="prompt"><div class="prompt-top"><span>Попробуй</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Сделай в Canva карусель на 7 слайдов на тему [тема]
+в моих цветах [HEX]. Пришли ссылку на дизайн,
+чтобы я могла поправить его в Canva.</pre></div>
+      <div class="links"><a class="btn pink" href="https://claude.ai/customize" target="_blank" rel="noopener">Открыть коннекторы <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass rv">
+      <div class="conn-head"><span class="conn-ico">🎬</span><div><h3>Higgsfield</h3><p>Генерирует фото и видео прямо из чата — тратит кредиты Higgsfield.</p></div></div>
+      <ol class="steps"><li><b>claude.ai/customize → Connectors → Add custom connector</b>.</li><li>Адрес сервера: <code>https://mcp.higgsfield.ai/mcp</code></li><li>Войди через Higgsfield — ключ не нужен.</li></ol>
+      <div class="prompt"><div class="prompt-top"><span>Попробуй</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Через Higgsfield сгенерируй 3 варианта обложки для рилс
+на тему [тема], формат 9:16, в стиле [описание].
+Перед генерацией скажи, сколько кредитов потратится.</pre></div>
+      <div class="links"><a class="btn pink" href="https://higgsfield.ai/creator-hub/help-center/integrations/how-do-i-connect-higgsfield-to-ai-agent" target="_blank" rel="noopener">Инструкция Higgsfield <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass b rv">
+      <div class="conn-head"><span class="conn-ico">💬</span><div><h3>ChatPlace</h3><p>Instagram: директ, подписчики, автоворонки и контент.</p></div></div>
+      <ol class="steps b-steps"><li><b>claude.ai/customize → Connectors → Add custom connector</b>.</li><li>Адрес сервера: <code>https://mcp.chatplace.io/mcp</code></li><li>API-ключ возьми на странице MCP в ChatPlace.</li></ol>
+      <div class="prompt"><div class="prompt-top"><span>Попробуй</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Посмотри мои активные автоворонки в ChatPlace
+и предложи, как улучшить первое сообщение в каждой.
+Ничего не меняй без моего подтверждения.</pre></div>
+      <div class="links"><a class="btn blue" href="https://blog.chatplace.io/chatplace-claude-voronka-bot-ili-karusel-za-odin-prompt/" target="_blank" rel="noopener">Инструкция ChatPlace <svg><use href="#arrow"/></svg></a></div>
+    </div>
+  </div>
+  <div class="note b"><svg><use href="#info"/></svg><span>Логины и пароли вводишь только ты на странице сервиса — Claude их не видит. Для старта ставь «спрашивать разрешение» на действия.</span></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Скиллы</span>
+  <div class="card glass rv"><h3><span class="dot"></span>Все скиллы — в отдельной папке</h3><p>Как установить, мои 4 скилла, Нейроантидот, скиллы для монтажа и дизайна.</p>
+  <div class="links"><button class="btn pink" data-go="7" type="button">Открыть папку «Скиллы» <svg><use href="#arrow"/></svg></button></div></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 4 · Автоматизация</span>
+  <div class="card rv">
+    <p><b>Проект</b> + <b>скилл</b> + <b>коннектор</b> = задача одной командой.</p>
+    <ol class="steps">
+      <li>Выпиши <b>3 задачи</b>, которые делаешь каждую неделю.</li>
+      <li>Пройди одну с Claude и доведи до <b>«как надо»</b>.</li>
+      <li>Сохрани процесс как <b>скилл</b>:</li>
+    </ol>
+    <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Мы только что прошли задачу [название] от начала до конца.
+Собери из этого скилл, чтобы в следующий раз делать её одной командой.
+В скилле опиши:
+— когда его использовать;
+— что нужно на входе и откуда это брать;
+— шаги по порядку;
+— как выглядит готовый результат и куда его сохранить;
+— чего делать нельзя.
+Покажи мне текст скилла до сохранения.</pre></div>
+  </div></div>
+
+  <div class="tracker rv at-end" data-tracker="3">
+    <div class="tr-head"><h3>📍 Трекер урока</h3><span class="tr-count"><b>0</b>/5</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="3-what" type="button"><span>Поняла, что есть что</span><span class="sw"></span></button>
+      <button class="check" data-check="3-conn" type="button"><span>Подключила Notion или Canva</span><span class="sw"></span></button>
+      <button class="check" data-check="3-more" type="button"><span>Higgsfield или ChatPlace</span><span class="sw"></span></button>
+      <button class="check" data-check="3-skills" type="button"><span>Открыла папку «Скиллы»</span><span class="sw"></span></button>
+      <button class="check" data-check="3-auto" type="button"><span>Первая автоматизация</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="2" type="button">← Урок 2</button><button class="btn pink" data-go="4" type="button">Урок 4 · Промпты <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= SKILLS FOLDER ================= -->
+<section class="lesson" data-lesson="7" id="l7">
+  <div class="sec-head"><div class="key num"><svg style="width:26px;height:26px"><use href="#star"/></svg></div><div><span class="kicker">Папка · все скиллы в одном месте</span><h2>Все <em>скиллы</em></h2></div></div>
+  <p class="sub">Скилл — инструкция «как делать задачу». <b>Ставишь один раз — работает всегда.</b></p>
+
+  <div class="note b" style="margin-top:18px"><svg><use href="#info"/></svg><span>Не знаешь, что такое <b>вкладка Code</b> и <b>папка проекта</b>? <a href="#l2" data-go="2"><b>Урок 2, шаг 4</b></a> — там за 2 минуты.</span></div>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Как установить скилл</span>
+  <div class="grid2">
+    <div class="card glass rv">
+      <h3><span class="dot"></span>Файлом — на сайте или в приложении</h3>
+      <ol class="steps"><li>Скачай файл <b>.skill</b> (кнопки в шаге 2).</li><li><b>claude.ai/customize → Skills → Upload skill</b>.</li><li>Проверь, что скилл включён.</li></ol>
+      <div class="links"><a class="btn pink" href="https://claude.ai/customize" target="_blank" rel="noopener">claude.ai/customize <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card rv">
+      <h3><span class="dot b"></span>В папку проекта — вкладка Code</h3>
+      <p>Положи файл .skill в рабочую папку и отправь:</p>
+      <div class="prompt"><div class="prompt-top"><span>Вкладка Code</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Найди файл .skill в папке проекта.
+Прочитай его и установи скилл в .claude/skills этого проекта.
+Проверь, что есть SKILL.md, и скажи, как им пользоваться.
+Исходный файл не удаляй.</pre></div>
+    </div>
+  </div>
+  <div class="note b"><svg><use href="#info"/></svg><span>Проверка: в новом чате напиши <b>«Какие скиллы тебе доступны?»</b> или введи <b>/</b> в Claude Code.</span></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Мои 4 скилла</span>
+  <div class="skills">
+    <div class="skill key rv"><span class="em">🔘</span><h4>UI/UX</h4><p>интерфейсы и digital-дизайн</p><a class="btn blue dl" href="skills/ui-ux.skill" download>Скачать .skill <svg><use href="#arrow"/></svg></a></div>
+    <div class="skill key rv"><span class="em">💎</span><h4>Монтаж</h4><p>графика и motion-эффекты</p><a class="btn pink dl" href="skills/montazh.skill" download>Скачать .skill <svg><use href="#arrow"/></svg></a></div>
+    <div class="skill key rv"><span class="em">✉️</span><h4>Дизайн</h4><p>композиция и типографика</p><a class="btn blue dl" href="skills/design.skill" download>Скачать .skill <svg><use href="#arrow"/></svg></a></div>
+    <div class="skill key rv"><span class="em">❤️</span><h4>Canva</h4><p>макеты и карусели</p><a class="btn pink dl" href="skills/canva.skill" download>Скачать .skill <svg><use href="#arrow"/></svg></a></div>
+  </div>
+  <div class="note"><svg><use href="#heart"/></svg><span>Скачай файл и установи, как в шаге 1: <b>claude.ai/customize → Skills → Upload skill</b>.</span></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Нейроантидот</span>
+  <div class="card glass rv">
+    <h3><span class="dot"></span>💉 Убирает нейросетевой почерк</h3>
+    <p>Находит типичные AI-конструкции и делает текст живым.</p>
+    <div class="cmd"><code>npx skills add Nanako0129/sepia -g</code><button class="copy" type="button">Скопировать</button></div>
+    <div class="pills"><span>/sepia-review · найти штампы</span><span>/sepia-refactor · исправить</span><span>/sepia-write · писать без штампов</span></div>
+    <div class="links"><a class="btn" href="https://github.com/Nanako0129/sepia" target="_blank" rel="noopener">Скилл на GitHub <svg><use href="#arrow"/></svg></a></div>
+    <div class="note b"><svg><use href="#info"/></svg><span>Сделан под английский и китайский — на русском проверь результат на своём тексте.</span></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 4 · Скиллы для монтажа и дизайна</span>
+  <p class="sub" style="margin:0 0 14px">Мой montazh — в шаге 2. Остальные ставятся одним промптом или по одному.</p>
+
+  <div class="card">
+    <h3>Все скиллы для монтажа и дизайна — одним промптом</h3>
+    <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Установи в этот проект все скиллы для видеомонтажа и дизайна.
+Все скиллы клади в папку .claude/skills этого проекта.
+Перед каждой установкой коротко пиши, что это за скилл.
+Если какой-то не ставится, не останавливайся: отметь и иди дальше.
+Если программа установки спрашивает, куда ставить, выбирай
+Claude Code и папку этого проекта.
+
+МОНТАЖ
+1. Remotion: npx skills add remotion-dev/skills
+2. HyperFrames: npx skills add heygen-com/hyperframes
+
+СТИЛЬ APPLE
+3. Apple Video Kit:
+   npx github:csalamida/apple-video-kit init apple-kit
+   затем npm install в папке apple-kit.
+   Скопируй скилл apple-kit/.agents/skills/apple-video-editor
+   в .claude/skills.
+4. Apple Motion:
+   git clone https://github.com/l1ghtk1d/apple-motion
+   скопируй папку skill/apple-motion в .claude/skills.
+5. Liquid Glass:
+   git clone --depth 1 https://github.com/stormaref/LiquidGlassSkill
+   скопируй папку plugins/liquid-glass/skills/liquid-glass в .claude/skills.
+
+ДИЗАЙН
+6. UI/UX Pro Max: npx skills add nextlevelbuilder/ui-ux-pro-max-skill
+7. Taste Skill: npx skills add Leonxlnx/taste-skill
+8. Impeccable: npx skills add pbakaus/impeccable
+9. Hallmark: npx skills add Nutlope/hallmark
+10. Awesome Design MD (это не скилл, а референсы):
+    git clone https://github.com/VoltAgent/awesome-design-md
+    в папку 02_референсы/design-md.
+
+После установки удали временные папки, которые остались
+после копирования скиллов.
+
+В конце покажи таблицу:
+скилл | для чего в монтаже | команда запуска | статус.</pre></div>
+    <div class="note">после установки откройте новую сессию с той же папкой и введите <b>/</b> — скиллы появятся в списке</div>
+  </div>
+
+  <div class="skills">
+    <div class="skill"><span class="tag">Монтаж</span><h4>Remotion</h4><p>Официальный скилл монтажа кодом: сцены, текст, анимация.</p>
+      <div class="cmd"><code>npx skills add remotion-dev/skills</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag">Монтаж</span><h4>HyperFrames</h4><p>Моушн-графика, анимации, переходы и субтитры.</p>
+      <div class="cmd"><code>npx skills add heygen-com/hyperframes</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag b">Стиль Apple</span><h4>Apple Video Kit</h4><p>Блоки, переходы, зумы и выделения для обучающих роликов.</p>
+      <div class="cmd"><code>npx github:csalamida/apple-video-kit init apple-kit</code><button class="copy" type="button">Копия</button></div>
+      <a href="https://github.com/csalamida/apple-video-kit" target="_blank" rel="noopener">GitHub →</a></div>
+    <div class="skill"><span class="tag b">Стиль Apple</span><h4>Apple Motion</h4><p>Кинетическая типографика и генератор звуков.</p>
+      <div class="cmd"><code>git clone https://github.com/l1ghtk1d/apple-motion</code><button class="copy" type="button">Копия</button></div>
+      <a href="https://github.com/l1ghtk1d/apple-motion" target="_blank" rel="noopener">GitHub →</a></div>
+    <div class="skill"><span class="tag b">Стиль Apple</span><h4>Liquid Glass</h4><p>Стеклянный эффект для плашек, карточек и кнопок.</p>
+      <div class="cmd"><code>git clone --depth 1 https://github.com/stormaref/LiquidGlassSkill</code><button class="copy" type="button">Копия</button></div>
+      <a href="https://github.com/stormaref/LiquidGlassSkill" target="_blank" rel="noopener">GitHub →</a></div>
+    <div class="skill"><span class="tag l">Дизайн</span><h4>UI/UX Pro Max</h4><p>База стилей, палитр и шрифтовых пар.</p>
+      <div class="cmd"><code>npx skills add nextlevelbuilder/ui-ux-pro-max-skill</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag l">Дизайн</span><h4>Taste Skill</h4><p>Насмотренность и меньше шаблонности.</p>
+      <div class="cmd"><code>npx skills add Leonxlnx/taste-skill</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag l">Дизайн</span><h4>Impeccable</h4><p>Полирует и упрощает то, что собрал ИИ.</p>
+      <div class="cmd"><code>npx skills add pbakaus/impeccable</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag l">Дизайн</span><h4>Hallmark</h4><p>Убирает «нейрослоп», делает аккуратнее.</p>
+      <div class="cmd"><code>npx skills add Nutlope/hallmark</code><button class="copy" type="button">Копия</button></div></div>
+    <div class="skill"><span class="tag g">Референсы</span><h4>Awesome Design MD</h4><p>Дизайн-системы известных брендов как референс.</p>
+      <div class="cmd"><code>git clone https://github.com/VoltAgent/awesome-design-md</code><button class="copy" type="button">Копия</button></div>
+      <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">GitHub →</a></div>
+  </div>
+  </div>
+
+  <div class="tracker rv at-end" data-tracker="7">
+    <div class="tr-head"><h3>📍 Трекер папки</h3><span class="tr-count"><b>0</b>/4</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="7-first" type="button"><span>Установила первый скилл</span><span class="sw"></span></button>
+      <button class="check" data-check="7-four" type="button"><span>Скачала 4 моих скилла</span><span class="sw"></span></button>
+      <button class="check" data-check="7-anti" type="button"><span>Нейроантидот</span><span class="sw"></span></button>
+      <button class="check" data-check="7-mont" type="button"><span>Скиллы для монтажа</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="5" type="button">← Урок 5</button><button class="btn pink" data-go="8" type="button">Папка «Инструменты» <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= TOOLS FOLDER ================= -->
+<section class="lesson" data-lesson="8" id="l8">
+  <div class="sec-head"><div class="key num b"><svg style="width:26px;height:26px"><use href="#gear"/></svg></div><div><span class="kicker">Папка · программы для Claude Code</span><h2>Все <em>инструменты</em></h2></div></div>
+  <p class="sub">Программы, которыми Claude режет, анимирует и рендерит. <b>Ставим до скиллов.</b></p>
+
+  <div class="note b" style="margin-top:18px"><svg><use href="#info"/></svg><span>Не знаешь, что такое <b>вкладка Code</b> и <b>папка проекта</b>? <a href="#l2" data-go="2"><b>Урок 2, шаг 4</b></a> — там за 2 минуты.</span></div>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Установка</span>
+<div class="card">
+    <div class="tabs" role="tablist"><button class="tab on" data-tab="mac" type="button">🍏 Mac</button><button class="tab" data-tab="win" type="button">🪟 Windows</button></div>
+    <div class="pane on" data-pane="mac"><div class="prompt"><div class="prompt-top"><span>Mac</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Установи на мой Mac инструменты для видеомонтажа
+и проверь, что каждый работает.
+
+1. Homebrew — менеджер программ для Mac (https://brew.sh),
+   если его ещё нет.
+2. Node.js версии 22 или новее — нужен для Remotion,
+   HyperFrames и скиллов.
+3. Python 3 — нужен для Whisper.
+4. FFmpeg — нарезка, склейка, звук и рендер (https://ffmpeg.org):
+   brew install ffmpeg
+5. yt-dlp — скачивает видео по ссылке (https://github.com/yt-dlp/yt-dlp):
+   brew install yt-dlp
+6. Whisper — расшифровка голоса в текст с таймкодами
+   (https://github.com/openai/whisper).
+   Если есть более быстрая версия для Mac, предложи её.
+7. Remotion — монтаж кодом (https://www.remotion.dev):
+   проверь, что npx create-video работает.
+8. HyperFrames — моушн-графика и анимация
+   (https://github.com/heygen-com/hyperframes):
+   проверь, что npx hyperframes работает.
+
+Перед каждой командой коротко объясняй, что она делает.
+Если что-то уже установлено, не переустанавливай, просто проверь версию.
+Если что-то не ставится, не останавливайся: отметь и иди дальше.
+
+В конце покажи таблицу:
+инструмент | для чего | версия | статус.</pre></div></div>
+    <div class="pane" data-pane="win"><div class="prompt"><div class="prompt-top"><span>Windows</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Подготовь мой Windows-компьютер для видеомонтажа в этом проекте.
+Проверь Node.js 22 или новее, Python 3, FFmpeg, yt-dlp и Whisper.
+Установи недостающее по официальным инструкциям для Windows.
+Homebrew и команды brew не используй.
+
+Проверь доступность инструментов Remotion и HyperFrames.
+Перед каждым действием коротко объясняй, что делаешь.
+Рабочие версии повторно не устанавливай.
+Если нужны мои действия, объясни их пошагово.
+Если установка не удалась, отметь и продолжи остальные проверки.
+
+В конце покажи таблицу:
+инструмент | для чего | версия | статус.
+Не отмечай инструмент рабочим без проверки запуска.</pre></div></div>
+    <div class="note b">если Mac попросит пароль от компьютера — введите его сами в появившемся окне, Claude его не вводит</div>
+  </div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Инструменты и готовые промпты</span>
+  <div class="note b" style="margin:0 0 14px"><svg><use href="#info"/></svg><span>Промпты используют рабочую папку с подпапками <b>01_исходники</b>, <b>02_референсы</b>, <b>03_экспорт</b> — создай их или впиши свои пути.</span></div>
+  <div class="grid2">
+    <div class="card glass b rv">
+      <span class="tag b">монтаж</span>
+      <h3 style="margin-top:10px"><span class="dot b"></span>Remotion</h3>
+      <p>Монтаж кодом: сцены, текст, анимация, рендер в MP4.</p>
+      <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Через Remotion сделай вертикальный ролик 1080×1920 на 10 секунд.
+Текст: [твой текст] — появляется по словам, мягко.
+Стиль: [опиши стиль или приложи референс].
+Открой превью в Remotion Studio и покажи мне,
+рендер — после моего подтверждения, в 03_экспорт.</pre></div>
+      <div class="links"><a class="btn" href="https://www.remotion.dev" target="_blank" rel="noopener">Сайт инструмента <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass b rv">
+      <span class="tag b">моушн</span>
+      <h3 style="margin-top:10px"><span class="dot b"></span>HyperFrames</h3>
+      <p>Моушн-графика: титры, плашки, переходы, субтитры.</p>
+      <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Через HyperFrames сделай анимированный титр на 3 секунды:
+текст «[заголовок]», стеклянная плашка, мягкое появление и уход.
+Формат 1080×1920, стиль: [опиши или приложи референс].
+Покажи превью, потом отрендери MP4 в 03_экспорт.</pre></div>
+      <div class="links"><a class="btn" href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener">Сайт инструмента <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass rv">
+      <span class="tag">видео</span>
+      <h3 style="margin-top:10px"><span class="dot"></span>FFmpeg</h3>
+      <p>Нарезка, склейка, сжатие, звук и конвертация.</p>
+      <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Через FFmpeg:
+1. Вырежи из 01_исходники/[файл] фрагмент [00:12]–[00:35].
+2. Сожми под Instagram: 1080×1920, H.264, звук AAC, до 50 МБ.
+3. Сохрани в 03_экспорт и напиши итоговый размер файла.
+Исходник не трогай.</pre></div>
+      <div class="links"><a class="btn" href="https://ffmpeg.org" target="_blank" rel="noopener">Сайт инструмента <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass rv">
+      <span class="tag">голос</span>
+      <h3 style="margin-top:10px"><span class="dot"></span>Whisper</h3>
+      <p>Расшифровка голоса в текст с таймкодами и субтитры.</p>
+      <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Расшифруй 01_исходники/[файл] через Whisper на русском языке
+с таймкодами по фразам и по словам.
+Исправь ошибки распознавания, смысл не меняй.
+Сохрани transcript.txt и transcript.srt в 01_исходники
+и покажи мне текст с таймкодами.</pre></div>
+      <div class="links"><a class="btn" href="https://github.com/openai/whisper" target="_blank" rel="noopener">Сайт инструмента <svg><use href="#arrow"/></svg></a></div>
+    </div>
+    <div class="card glass b rv">
+      <span class="tag b">скачать</span>
+      <h3 style="margin-top:10px"><span class="dot b"></span>yt-dlp</h3>
+      <p>Скачивает видео по ссылке для референсов.</p>
+      <div class="prompt"><div class="prompt-top"><span>Промпт</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Скачай видео по ссылке через yt-dlp в лучшем качестве MP4
+в папку 02_референсы:
+[ссылка]
+Назови файл по названию ролика. Если скачать не получилось —
+напиши почему и что мне сделать вручную.</pre></div>
+      <div class="links"><a class="btn" href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">Сайт инструмента <svg><use href="#arrow"/></svg></a></div>
+    </div>
+  </div>
+  <div class="note"><svg><use href="#info"/></svg><span>Используй видео по ссылке только как референс — свои ролики или с разрешения автора.</span></div>
+  </div>
+
+  <div class="tracker rv at-end" data-tracker="8">
+    <div class="tr-head"><h3>📍 Трекер папки</h3><span class="tr-count"><b>0</b>/3</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="8-install" type="button"><span>Установила инструменты</span><span class="sw"></span></button>
+      <button class="check" data-check="8-table" type="button"><span>Все статусы «работает»</span><span class="sw"></span></button>
+      <button class="check" data-check="8-try" type="button"><span>Попробовала промпт</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="7" type="button">← Папка «Скиллы»</button><button class="btn pink" data-go="1" type="button">К началу курса ↺</button></div>
+</section>
+
+<!-- ================= LESSON 4 ================= -->
+<section class="lesson" data-lesson="4" id="l4">
+  <div class="sec-head"><div class="key num b">04</div><div><span class="kicker">Урок 4 из 5 · 30 минут</span><h2>Промпты, <em>которые работают</em></h2></div></div>
+  <p class="sub">Нормальный результат <b>с первой-второй попытки.</b></p>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Алгоритм новичка</span>
+  <div class="alg">
+    <div class="ms rv"><b>01</b><h4>Сначала цель</h4><p>Зачем мне результат? Без цели ИИ усиливает хаос.</p></div>
+    <div class="ms rv"><b>02</b><h4>Результат, не процесс</h4><p>Опиши, что должно быть на выходе.</p></div>
+    <div class="ms rv"><b>03</b><h4>Базовая версия</h4><p>Простой промпт → смотришь → усложняешь.</p></div>
+    <div class="ms rv"><b>04</b><h4>Один параметр</h4><p>Меняй по одному — один вывод.</p></div>
+    <div class="ms rv"><b>05</b><h4>Фиксируй удачное</h4><p>Строй библиотеку решений.</p></div>
+    <div class="ms rv"><b>06</b><h4>Читай ошибки</h4><p>Где неясно, где конфликт, где дефолт.</p></div>
+    <div class="ms rv"><b>07</b><h4>Контроль → креатив</h4><p>Сначала стабильно, потом «вау».</p></div>
+    <div class="ms rv"><b>08</b><h4>Работай сериями</h4><p>Навык — 10 хороших подряд.</p></div>
+    <div class="ms rv"><b>09</b><h4>Идея ≠ реализация</h4><p>Слабую идею нейронка не спасёт.</p></div>
+    <div class="ms rv"><b>10</b><h4>Расти в мышлении</h4><p>Инструменты меняются, навык — нет.</p></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Формула</span>
+  <div class="card glass rv">
+    <div class="formula"><span>Роль</span><span>Задача</span><span>Контекст</span><span>Пример</span><span>Формат</span><span>Нельзя</span></div>
+    <div class="prompt"><div class="prompt-top"><span>Универсальный шаблон</span><button class="copy" type="button">Скопировать</button></div>
+<pre>РОЛЬ: ты — [кто].
+ЗАДАЧА: [что сделать].
+КОНТЕКСТ: [для кого, зачем, что уже есть].
+ПРИМЕР: [как должно звучать или выглядеть].
+ФОРМАТ: [таблица / список / N вариантов / объём].
+НЕЛЬЗЯ: [что исключить].
+Если чего-то не хватает — сначала задай мне до 3 вопросов.</pre></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Шаблоны</span>
+  <div class="card rv">
+    <div class="tabs" role="tablist" style="flex-wrap:wrap;border-radius:22px">
+      <button class="tab on" data-tab="reels" type="button">🎬 Рилс</button>
+      <button class="tab" data-tab="carousel" type="button">📱 Карусель</button>
+      <button class="tab" data-tab="dm" type="button">💬 Директ</button>
+      <button class="tab" data-tab="ref" type="button">🔍 Разбор</button>
+    </div>
+    <div class="pane on" data-pane="reels"><div class="prompt"><div class="prompt-top"><span>Сценарий рилс</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Напиши сценарий рилс на [15 / 30 / 60] секунд на тему [тема].
+Для кого: [аудитория]. Цель: [сохранения / комментарии / заявки].
+Структура: хук в первые 3 секунды → проблема → решение → призыв.
+Таблица: секунды | что говорю | что в кадре | текст на экране.
+Дай 3 варианта хука. Говори простым разговорным языком.</pre></div></div>
+    <div class="pane" data-pane="carousel"><div class="prompt"><div class="prompt-top"><span>Карусель</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Сделай текст карусели на [7–10] слайдов на тему [тема].
+Слайд 1 — заголовок, который хочется листать (дай 3 варианта).
+На каждом слайде — одна мысль, до 25 слов.
+Последний слайд — призыв [что сделать].
+Пиши в стиле моих текстов из проекта.</pre></div></div>
+    <div class="pane" data-pane="dm"><div class="prompt"><div class="prompt-top"><span>Ответ в директ</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Клиент написал: «[сообщение]».
+Напиши ответ от моего имени: тепло, без давления, до 500 знаков.
+Сначала покажи, что поняла запрос, потом предложи подходящий продукт
+из файла «Продукты» и один понятный следующий шаг.
+Дай 2 варианта: короткий и подробный.</pre></div></div>
+    <div class="pane" data-pane="ref"><div class="prompt"><div class="prompt-top"><span>Разбор чужого контента</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Вот пост (или сценарий), который хорошо зашёл: [текст].
+Разбери, почему он работает: хук, структура, эмоция, призыв.
+Потом напиши мой вариант на тему [моя тема] по той же схеме.
+Текст не копируй — бери только приёмы.</pre></div></div>
+  </div></div>
+
+  <div class="block"><span class="step-tag">Шаг 4 · Доработка</span>
+  <div class="card glass b rv">
+    <ol class="steps b-steps">
+      <li><b>Говори, что не так:</b> «второй абзац слишком официальный».</li>
+      <li><b>Проси варианты:</b> «дай ещё 5 хуков, посмелее».</li>
+      <li><b>Фиксируй хорошее:</b> «начало оставь, переделай финал».</li>
+      <li><b>Проси самопроверку:</b> «проверь текст по моим правилам».</li>
+    </ol>
+    <div class="note"><svg><use href="#heart"/></svg><span>Новая задача — новый чат внутри проекта.</span></div>
+  </div></div>
+
+  <div class="tracker rv at-end" data-tracker="4">
+    <div class="tr-head"><h3>📍 Трекер урока</h3><span class="tr-count"><b>0</b>/5</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="4-alg" type="button"><span>Прочитала алгоритм</span><span class="sw"></span></button>
+      <button class="check" data-check="4-formula" type="button"><span>Разобралась в формуле</span><span class="sw"></span></button>
+      <button class="check" data-check="4-rewrite" type="button"><span>Переписала свой промпт</span><span class="sw"></span></button>
+      <button class="check" data-check="4-save" type="button"><span>Сохранила шаблоны</span><span class="sw"></span></button>
+      <button class="check" data-check="4-iter" type="button"><span>Доработала ответ</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="3" type="button">← Урок 3</button><button class="btn pink" data-go="5" type="button">Урок 5 · Опросник <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= LESSON 5 ================= -->
+<section class="lesson" data-lesson="5" id="l5">
+  <div class="sec-head"><div class="key num">05</div><div><span class="kicker">Урок 5 из 5 · 40–60 минут</span><h2>Опросник: <em>проект под тебя</em></h2></div></div>
+  <p class="sub">Отвечаешь на вопросы — нейросеть собирает инструкции и файлы <b>в твоём стиле.</b></p>
+
+  <div class="block"><span class="step-tag">Шаг 1 · Опросник</span>
+  <div class="prompt long rv"><div class="prompt-top"><span>Скопируй в заметки и заполни</span><button class="copy" type="button">Скопировать</button></div>
+<pre>ОПРОСНИК ДЛЯ НАСТРОЙКИ ПРОЕКТА
+
+1. ОБО МНЕ
+— Как меня зовут и как ко мне обращаться:
+— Чем я занимаюсь в одной фразе:
+— Мой опыт и результаты (цифры, кейсы, образование):
+— Моя история: как пришла в это дело:
+— Мои ценности и во что я верю:
+— Чем я отличаюсь от других в нише:
+
+2. НИША
+— Моя ниша и направление:
+— Где я веду блог и какие форматы делаю:
+— 3–5 конкурентов или авторов, которые мне нравятся (и чем):
+— Что меня раздражает в моей нише:
+
+3. АУДИТОРИЯ
+— Кто мой идеальный клиент (возраст, жизнь, работа, доход):
+— С какой проблемой он ко мне приходит:
+— Чего он хочет на самом деле:
+— Чего боится и что мешает купить:
+— Типичные фразы клиентов (цитаты из директа и отзывов):
+
+4. ПРОДУКТЫ
+Для каждого продукта:
+— Название и формат (курс, консультация, услуга, товар):
+— Для кого и какой результат даёт:
+— Что входит:
+— Цена и тарифы:
+— Как купить (ссылка, кодовое слово, кому писать):
+— Чем отличается от похожих на рынке:
+
+5. ГОЛОС БРЕНДА
+— 3 слова, которые описывают мой стиль (например: спокойно, с юмором, по делу):
+— «Ты» или «вы»:
+— Любимые слова и фирменные фразы:
+— Слова и фразы, которые я НИКОГДА не использую:
+— Мат, сленг, эмодзи — можно или нет, сколько:
+— Длина текстов: коротко или развёрнуто:
+— Как я точно НЕ хочу звучать:
+
+6. ПРИМЕРЫ МОИХ ТЕКСТОВ
+Вставь 5–10 своих лучших текстов целиком: посты, сценарии, рассылки.
+Под каждым текстом напиши, чем он тебе нравится.
+
+7. ОГРАНИЧЕНИЯ
+— Темы, которые я не затрагиваю:
+— Обещания, которые нельзя давать (гарантии, медицина, деньги):
+— Что нельзя придумывать (цифры, отзывы, кейсы):
+— Требования площадок и закона, которые нужно соблюдать:
+
+8. ЦЕЛИ И ЗАДАЧИ
+— Чего я хочу достичь за 3 месяца:
+— Какие задачи хочу отдать нейросети (посты, сценарии, ответы в директ, продукты):
+— Что у меня сейчас отнимает больше всего времени:
+— Как я пойму, что нейросеть справилась хорошо:</pre><button class="more" type="button">Развернуть ↓</button></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 2 · Собери мой проект</span>
+  <div class="prompt long rv"><div class="prompt-top"><span>Вставь свои ответы вместо [ОТВЕТЫ]</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Ты — продюсер и бренд-стратег. Ниже мои ответы на опросник.
+Задача: настроить проект так, чтобы ты переписывал и создавал
+мои продукты и контент так, как написала бы я сама.
+
+ШАГ 1. Прочитай ответы и примеры текстов.
+Если чего-то важного не хватает — задай до 5 вопросов
+и дождись ответа. Если всего хватает — сразу переходи к шагу 2.
+
+ШАГ 2. Собери 4 документа, каждый отдельным блоком для копирования:
+
+1) ИНСТРУКЦИИ ПРОЕКТА — до 3000 знаков:
+   роль, задачи, на какие файлы опираться, правила стиля,
+   запреты, формат ответов, что делать, если данных не хватает.
+2) ФАЙЛ «Обо мне и бренде» — кто я, история, ценности, отличия,
+   аудитория с болями, страхами и цитатами.
+3) ФАЙЛ «Продукты» — все продукты в одном формате:
+   для кого, результат, состав, цена, как купить, отличия.
+4) ФАЙЛ «Голос бренда» — 5 главных правил моего стиля,
+   любимые и запретные слова, структура моих текстов,
+   таблица «как я пишу / как я НЕ пишу» с примерами из моих текстов.
+
+ПРАВИЛА
+— используй только факты из моих ответов, ничего не придумывай;
+— если ответа нет, пиши «❔ заполнить»;
+— стиль определяй по примерам текстов, а не по моим описаниям себя;
+— пиши просто, без маркетингового жаргона.
+
+ШАГ 3. В конце напиши:
+— что ещё стоит добавить в базу знаний;
+— 3 тестовых задания, чтобы проверить, что проект настроен верно.
+
+МОИ ОТВЕТЫ:
+[ОТВЕТЫ]</pre><button class="more" type="button">Развернуть ↓</button></div>
+  <div class="note"><svg><use href="#info"/></svg><span>Инструкции — в <b>Instructions</b> проекта, три файла — в базу знаний.</span></div>
+  </div>
+
+  <div class="block"><span class="step-tag">Шаг 3 · Тест-драйв</span>
+  <div class="grid2">
+    <div class="prompt rv"><div class="prompt-top"><span>Отправь в проекте</span><button class="copy" type="button">Скопировать</button></div>
+<pre>1. Перепиши описание моего главного продукта для лендинга в моём стиле.
+2. Напиши пост-знакомство для новых подписчиков.
+3. Придумай идею нового продукта для моей аудитории и опиши его:
+   для кого, результат, состав, формат, стоимость с обоснованием.</pre></div>
+    <div class="prompt rv"><div class="prompt-top"><span>Если не похоже на тебя</span><button class="copy" type="button">Скопировать</button></div>
+<pre>Вот что в твоём ответе не похоже на меня: [что].
+Предложи, что поправить в инструкциях или файле «Голос бренда»,
+чтобы это не повторялось. Покажи точный текст для замены.</pre></div>
+  </div></div>
+
+  <div class="tracker rv at-end" data-tracker="5">
+    <div class="tr-head"><h3>📍 Трекер урока</h3><span class="tr-count"><b>0</b>/5</span></div>
+    <div class="tr-bar"><i></i></div>
+    <div class="checks">
+      <button class="check" data-check="5-quiz" type="button"><span>Заполнила опросник</span><span class="sw"></span></button>
+      <button class="check" data-check="5-texts" type="button"><span>Подобрала 5–10 текстов</span><span class="sw"></span></button>
+      <button class="check" data-check="5-prompt" type="button"><span>Отправила промпт</span><span class="sw"></span></button>
+      <button class="check" data-check="5-load" type="button"><span>Загрузила в проект</span><span class="sw"></span></button>
+      <button class="check" data-check="5-drive" type="button"><span>Тест-драйв</span><span class="sw"></span></button>
+    </div>
+  </div>
+
+  <div class="next"><button class="btn" data-go="4" type="button">← Урок 4</button><button class="btn pink" data-go="7" type="button">Папка «Скиллы» <svg><use href="#arrow"/></svg></button></div>
+</section>
+
+<!-- ================= GLOSSARY ================= -->
+<section class="lesson" data-lesson="6" id="l6">
+  <div class="sec-head"><div class="key num b"><svg style="width:26px;height:26px"><use href="#chat"/></svg></div><div><span class="kicker">Папка · 36 слов простым языком</span><h2>Сло<em>варь</em></h2></div></div>
+  <p class="sub">Встретила непонятное слово — <b>ищи его здесь.</b></p>
+  <div class="gl-tools">
+    <input class="gl-search" id="glSearch" type="search" placeholder="Найти слово: промпт, MCP, скилл…" autocomplete="off">
+    <div class="gl-chips"><button class="chip on" data-cat="all" type="button">Все</button><button class="chip" data-cat="база" type="button">Основа</button><button class="chip" data-cat="настройка" type="button">Настройка</button><button class="chip" data-cat="расширения" type="button">Расширения</button><button class="chip" data-cat="code" type="button">Claude Code</button></div>
+  </div>
+  <div class="gloss" id="gloss">
+    <div class="term" data-cat="база"><span class="em">🤖</span><div class="st"><span class="tag">Основа</span><h4>Нейросеть (ИИ, модель)</h4><p>Программа, которая понимает текст и отвечает на него. Claude и ChatGPT — две разные нейросети.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">💬</span><div class="st"><span class="tag">Основа</span><h4>Чат</h4><p>Одна переписка с нейросетью. Новая задача — новый чат.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">✍️</span><div class="st"><span class="tag">Основа</span><h4>Промпт</h4><p>Твой запрос к нейросети: что сделать, для кого и в каком виде.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">🧠</span><div class="st"><span class="tag">Основа</span><h4>Контекст</h4><p>Всё, что нейросеть «видит» в этом чате: переписка, файлы, инструкции. Чего нет в контексте — она не знает.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">🪙</span><div class="st"><span class="tag">Основа</span><h4>Токен</h4><p>Кусочек текста, которым нейросеть «считает» слова. В токенах измеряют длину переписки и лимиты.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">⏳</span><div class="st"><span class="tag">Основа</span><h4>Лимит</h4><p>Сколько сообщений можно отправить за период на твоём тарифе. Длинные чаты тратят лимит быстрее.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">💳</span><div class="st"><span class="tag">Основа</span><h4>Тариф (подписка)</h4><p>Платный план: Claude Pro, ChatGPT Plus. Даёт больше лимитов и функций.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">🌍</span><div class="st"><span class="tag">Основа</span><h4>VPN</h4><p>Сервис, который меняет твою «страну» в интернете. Без него Claude и ChatGPT из России не открываются.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">🦄</span><div class="st"><span class="tag">Основа</span><h4>Галлюцинация</h4><p>Когда нейросеть уверенно придумывает факт, цифру или ссылку. Поэтому важное проверяй.</p></div></div>
+    <div class="term" data-cat="база"><span class="em">🔁</span><div class="st"><span class="tag">Основа</span><h4>Итерация</h4><p>Одна правка ответа. Хороший результат обычно получается за 2–3 итерации.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">💅</span><div class="st"><span class="tag b">Настройка</span><h4>Персонализация</h4><p>Настройка «о себе» для всех чатов: кто ты и как тебе отвечать.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">💾</span><div class="st"><span class="tag b">Настройка</span><h4>Память (Memory)</h4><p>Нейросеть запоминает важное из прошлых разговоров и учитывает это дальше.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">📁</span><div class="st"><span class="tag b">Настройка</span><h4>Проект</h4><p>Отдельная «комната» под задачу: свои чаты, файлы и правила.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">📚</span><div class="st"><span class="tag b">Настройка</span><h4>База знаний</h4><p>Файлы, которые ты загрузила в проект: о себе, продуктах, аудитории, примеры текстов.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">📋</span><div class="st"><span class="tag b">Настройка</span><h4>Инструкции (Instructions)</h4><p>Правила проекта: кем быть, как писать, чего нельзя.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">🎭</span><div class="st"><span class="tag b">Настройка</span><h4>Роль</h4><p>Кем нейросеть должна быть в задаче: «ты — редактор моего блога».</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">🎤</span><div class="st"><span class="tag b">Настройка</span><h4>Голос бренда</h4><p>Твой стиль речи: любимые слова, тон, чего ты никогда не пишешь.</p></div></div>
+    <div class="term" data-cat="настройка"><span class="em">📌</span><div class="st"><span class="tag b">Настройка</span><h4>Референс</h4><p>Пример «хочу так же»: текст, картинка или ролик, на который нужно ориентироваться.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">⚡</span><div class="st"><span class="tag">Расширения</span><h4>Скилл</h4><p>Готовая инструкция «как делать задачу». Ставится один раз, Claude сам подключает её, когда нужно.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">🔑</span><div class="st"><span class="tag">Расширения</span><h4>Коннектор</h4><p>«Ключ» от другого сервиса: Claude может зайти в Notion, Canva или Google Drive и работать там.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">🔌</span><div class="st"><span class="tag">Расширения</span><h4>MCP</h4><p>Стандарт, по которому работают коннекторы. Как розетка: сервисы подключаются одинаково.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">🛰️</span><div class="st"><span class="tag">Расширения</span><h4>MCP-сервер</h4><p>Адрес сервиса для подключения, например mcp.higgsfield.ai. Его вставляют при добавлении своего коннектора.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">📦</span><div class="st"><span class="tag">Расширения</span><h4>Плагин</h4><p>Набор «в одной коробке»: скиллы + коннекторы + команды.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">🔐</span><div class="st"><span class="tag">Расширения</span><h4>API-ключ</h4><p>Длинный секретный код-пароль от сервиса. Никому не показывай и не вставляй в чат.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">⚙️</span><div class="st"><span class="tag">Расширения</span><h4>Автоматизация</h4><p>Повторяющаяся задача, которая запускается одной командой.</p></div></div>
+    <div class="term" data-cat="расширения"><span class="em">🕵️</span><div class="st"><span class="tag">Расширения</span><h4>Агент</h4><p>Режим, в котором нейросеть сама делает задачу по шагам: открывает файлы, запускает программы, проверяет результат.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">💻</span><div class="st"><span class="tag b">Claude Code</span><h4>Claude Code (вкладка Code)</h4><p>Режим Claude, который работает с файлами на твоём компьютере: монтаж, сайты, установка скиллов.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🗂️</span><div class="st"><span class="tag b">Claude Code</span><h4>Папка проекта</h4><p>Папка на компьютере, которую ты открыла во вкладке Code. В ней лежат файлы, скиллы и результаты.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">▶️</span><div class="st"><span class="tag b">Claude Code</span><h4>Сессия</h4><p>Один запуск работы во вкладке Code с выбранной папкой.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">⌨️</span><div class="st"><span class="tag b">Claude Code</span><h4>Команда (/команда)</h4><p>Короткое слово со слэшем, которое запускает скилл: например /sepia-review.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🖥️</span><div class="st"><span class="tag b">Claude Code</span><h4>Терминал</h4><p>Окно, где программы запускают текстом. Во вкладке Code команды за тебя вводит Claude.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🚀</span><div class="st"><span class="tag b">Claude Code</span><h4>npx</h4><p>Команда, которая скачивает и запускает программу или скилл одной строкой. Тебе достаточно скопировать её Claude.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🐙</span><div class="st"><span class="tag b">Claude Code</span><h4>GitHub</h4><p>Сайт, где разработчики хранят программы и скиллы. Оттуда они и скачиваются.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🛠️</span><div class="st"><span class="tag b">Claude Code</span><h4>Инструмент</h4><p>Программа на компьютере, которой пользуется Claude: FFmpeg режет видео, Whisper расшифровывает голос.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🎧</span><div class="st"><span class="tag b">Claude Code</span><h4>Транскрипция</h4><p>Перевод голоса в текст с таймкодами.</p></div></div>
+    <div class="term" data-cat="code"><span class="em">🎬</span><div class="st"><span class="tag b">Claude Code</span><h4>Рендер</h4><p>Сборка готового видеофайла. Может идти 5–15 минут.</p></div></div>
+  </div>
+  <div class="card glass" id="glEmpty" style="display:none;margin-top:14px"><p>Такого слова пока нет. Напиши мне в Telegram — добавлю.</p></div>
+</section>
+
+<!-- ================= FAVORITES ================= -->
+<section class="lesson" data-lesson="9" id="l9">
+  <div class="sec-head"><div class="key num"><svg style="width:26px;height:26px"><use href="#bookmark"/></svg></div><div><span class="kicker">Папка · твои промпты</span><h2>Сохра<em>нённое</em></h2></div></div>
+  <p class="sub">Нажимай <b>флажок</b> на любом промпте — он появится здесь, как «Сохранённое» в Instagram.</p>
+  <div id="favList"></div>
+  <div class="card glass rv" id="favEmpty"><h3><span class="dot"></span>Пока пусто</h3><p>Открой любой урок и нажми <b>флажок</b> рядом с кнопкой «Скопировать». Все сохранённые промпты соберутся в этой папке.</p>
+    <div class="links"><button class="btn pink" data-go="4" type="button">К промптам <svg><use href="#arrow"/></svg></button></div></div>
+</section>
+
+</div>
+
+<!-- FINISH -->
+<section id="finish">
+  <div class="done-card rv">
+    <div class="ring"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="55" class="bg"/><circle cx="65" cy="65" r="55" class="fg" id="ringFg"/></svg><b id="ringTxt">0%</b></div>
+    <div>
+      <h3>Общий трекер</h3>
+      <p id="doneMsg">Включай переключатели в трекере каждого урока — прогресс сохранится в этом браузере.</p>
+      <div class="lesson-bars" id="lessonBars"></div>
+      <div class="links">
+        <button class="btn" id="saveProg" type="button">💾 Сохранить прогресс</button>
+        <button class="btn" id="loadProg" type="button">↺ Восстановить</button>
+        <button class="btn" id="resetDone" type="button">Сбросить</button>
+        <input type="file" id="progFile" accept=".json,application/json" hidden>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HELP -->
+<section id="help">
+  <div class="sec-head"><div class="key num b">?</div><div><span class="kicker">Если что-то не получается</span><h2>Помощь</h2></div></div>
+  <div class="faq rv">
+    <details class="qa"><summary>Не открывается сайт Claude или ChatGPT<span class="pm"></span></summary><p>Включи VPN <b>до</b> открытия сайта и выбери страну из списка поддерживаемых: Германия, Нидерланды, США. Не помогло — смени сервер или VPN: бесплатные часто заблокированы.</p></details>
+    <details class="qa"><summary>Не приходит SMS с кодом<span class="pm"></span></summary><p>Номер должен быть из поддерживаемой страны и подходить именно для Claude. VoIP-номера и номера из приложений Claude не принимает — возьми другой номер.</p></details>
+    <details class="qa"><summary>Не проходит оплата<span class="pm"></span></summary><p>Проверь, что VPN включён, а на балансе Apple или Небанка есть запас на налог и комиссию. Не помогло — попробуй другой вариант оплаты из Урока 1.</p></details>
+    <details class="qa"><summary>Нет кнопки или пункта меню<span class="pm"></span></summary><p>Интерфейсы часто обновляются. Ищи похожее название рядом или спроси саму нейросеть: «Где в настройках найти …?»</p></details>
+    <details class="qa"><summary>Нейросеть пишет «не как я»<span class="pm"></span></summary><p>Добавь в проект 3–5 своих текстов и пройди тест-драйв из Урока 5. Исправляй инструкции и файл «Голос бренда», а не каждый ответ.</p></details>
+    <details class="qa"><summary>Закончился лимит<span class="pm"></span></summary><p>Подожди обновления лимита. Новая задача — новый чат: длинные переписки расходуют лимит быстрее.</p></details>
+    <details class="qa"><summary>Скилл не виден<span class="pm"></span></summary><p>Проверь, что он включён в claude.ai/customize → Skills. В Claude Code открой новую сессию в той же папке и введи /.</p></details>
+    <details class="qa"><summary>Коннектор не подключается<span class="pm"></span></summary><p>Войди в сервис заново через Connect. Для Higgsfield и ChatPlace проверь адрес сервера, для ChatPlace — API-ключ.</p></details>
+    <details class="qa"><summary>Прогресс пропал<span class="pm"></span></summary><p>Отметки хранятся в браузере. Если чистила браузер или зашла с другого устройства — нажми «Восстановить» в общем трекере и выбери сохранённый файл.</p></details>
+  </div>
+  <div class="note"><svg><use href="#heart"/></svg><span>Не нашла ответ — <a href="https://t.me/kkkkkkkkati" target="_blank" rel="noopener"><b>напиши мне в Telegram</b></a>.</span></div>
+</section>
+
+
+
+<footer>
+  <div class="links" style="justify-content:center">
+    <a class="btn pink" href="https://app.notion.com/p/41a3c5a9c0228138be83cf7c35930994" target="_blank" rel="noopener">Полный воркбук в Notion <svg><use href="#arrow"/></svg></a>
+    <a class="btn" href="https://t.me/kkkkkkkkati" target="_blank" rel="noopener">Вопрос — в Telegram</a>
+  </div>
+  <div class="sign">Нейропедалирование</div>
+</footer>
+
+</div>
+
+<nav class="tabbar" aria-label="Быстрая навигация">
+  <a href="#folders" id="tbHome"><svg><use href="#folder"/></svg>Уроки</a>
+  <a href="#l7" data-go="7"><svg><use href="#star"/></svg>Скиллы</a>
+  <a href="#l6" data-go="6"><svg><use href="#chat"/></svg>Словарь</a>
+  <a href="#l9" data-go="9"><svg><use href="#bookmark"/></svg>Сохранённое</a>
+  <a href="#finish"><svg><use href="#bolt"/></svg>Трекер</a>
+</nav>
+<button class="key totop" id="totop" type="button" aria-label="Наверх">↑</button>
+<div class="toast" id="toast">Скопировано ♡</div>
+
+<script>
+(function(){
+  var store={get:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+  /* copy */
+  var toast=document.getElementById('toast'),tt;
+  function show(m){toast.textContent=m||'Скопировано ♡';toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show')},1400)}
+  function fallback(text){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  function hearts(btn){var r=btn.getBoundingClientRect();for(var i=0;i<6;i++){var h=document.createElement('span');h.className='heart-fly';h.textContent='♥';h.style.left=(r.left+r.width/2-6)+'px';h.style.top=(r.top-4)+'px';h.style.setProperty('--dx',(Math.random()*80-40)+'px');h.style.animationDelay=(i*40)+'ms';document.body.appendChild(h);setTimeout(function(x){x.remove()},1100,h)}}
+  function doCopy(btn){
+    if(!btn.dataset.label)btn.dataset.label=btn.textContent;
+    var box=btn.closest('.prompt')||btn.closest('.cmd');
+    var el=box.querySelector('pre')||box.querySelector('code');
+    var text=el.innerText.trim();
+    var done=function(){btn.classList.add('ok');btn.textContent='Готово ♡';show();hearts(btn);setTimeout(function(){btn.classList.remove('ok');btn.textContent=btn.dataset.label},1400)};
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+  }
+  document.addEventListener('click',function(e){
+    var c=e.target.closest('.copy');if(c){doCopy(c);return}
+    var m=e.target.closest('.more');if(m){var p=m.closest('.prompt');p.classList.toggle('open');m.textContent=p.classList.contains('open')?'Свернуть ↑':'Развернуть ↓';return}
+    var st=e.target.closest('.star');if(st){toggleFav(st.dataset.pid,st);return}
+  });
+
+  /* favorites */
+  var favs=store.get('wb01-favs')||[];
+  function hash(t){var h=0;for(var i=0;i<t.length;i++){h=(h*31+t.charCodeAt(i))|0}return 'p'+(h>>>0).toString(36)}
+  var lessonNames={1:'Урок 1 · Оплата',2:'Урок 2 · Настройка',3:'Урок 3 · MCP',4:'Урок 4 · Промпты',5:'Урок 5 · Опросник',7:'Папка · Скиллы',8:'Папка · Инструменты'};
+  document.querySelectorAll('.lesson:not([data-lesson="9"]) .prompt').forEach(function(pr){
+    var title=(pr.querySelector('.prompt-top span')||{}).textContent||'';
+    var pid=hash(title+'|'+pr.querySelector('pre').textContent.slice(0,80));
+    pr.dataset.pid=pid;
+    var st=document.createElement('button');st.type='button';st.className='star';st.dataset.pid=pid;st.title='Сохранить';st.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.6L6 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+    var top=pr.querySelector('.prompt-top');top.insertBefore(st,top.querySelector('.copy'));
+  });
+  function renderFavs(){
+    favs=favs.filter(function(id){return document.querySelector('.lesson:not([data-lesson="9"]) .prompt[data-pid="'+id+'"]')});
+    document.querySelectorAll('.star').forEach(function(b){var on=favs.indexOf(b.dataset.pid)>-1;b.classList.toggle('on',on);b.title=on?'Убрать из сохранённого':'Сохранить'});
+    var list=document.getElementById('favList');list.innerHTML='';
+    favs.forEach(function(id){
+      var src=document.querySelector('.lesson:not([data-lesson="9"]) .prompt[data-pid="'+id+'"]');
+      var wrap=document.createElement('div');wrap.className='fav-item';
+      var from=document.createElement('span');from.className='fav-from';from.textContent=lessonNames[src.closest('.lesson').dataset.lesson]||'';
+      var cl=src.cloneNode(true);cl.classList.remove('rv');cl.classList.remove('open');
+      var mb=cl.querySelector('.more');if(mb)mb.textContent='Развернуть ↓';
+      wrap.appendChild(from);wrap.appendChild(cl);list.appendChild(wrap);
+    });
+    document.getElementById('favEmpty').style.display=favs.length?'none':'';
+    var n=favs.length,w=n%10===1&&n%100!==11?'промпт':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'промпта':'промптов');
+    document.getElementById('favCount').textContent=n+' '+w;
+  }
+  function toggleFav(id,btn){
+    var i=favs.indexOf(id);if(i>-1){favs.splice(i,1)}else{favs.push(id);show('Сохранено — ищи в папке «Сохранённое»')}
+    store.set('wb01-favs',favs);renderFavs();
+  }
+  renderFavs();
+
+  /* tabs */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    var card=tabs.parentElement;
+    tabs.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){
+      tabs.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t)});
+      card.querySelectorAll(':scope > .pane').forEach(function(p){p.classList.toggle('on',p.dataset.pane===t.dataset.tab)});
+    })});
+  });
+
+  /* payment chooser */
+  var vars=document.getElementById('variants');
+  document.querySelectorAll('.chooser .chip').forEach(function(c){c.addEventListener('click',function(){
+    var on=!c.classList.contains('on');
+    document.querySelectorAll('.chooser .chip').forEach(function(x){x.classList.remove('on')});
+    vars.classList.toggle('picked',on);
+    vars.querySelectorAll('.card').forEach(function(card){card.classList.toggle('pick',on&&card.dataset.var===c.dataset.pick)});
+    if(on){c.classList.add('on')}
+  })});
+
+  /* hero demo switches */
+  document.querySelectorAll('.sw.demo').forEach(function(s,i){setInterval(function(){s.classList.toggle('on')},2600+i*700)});
+
+  /* lessons as folders */
+  var names=['Оплата','Настройка','MCP','Промпты','Опросник','','Скиллы','Инструменты'];
+  function openLesson(n,scroll){
+    n=String(n);
+    document.querySelectorAll('.lesson').forEach(function(l){l.classList.toggle('on',l.dataset.lesson===n)});
+    document.querySelectorAll('.folder-btn').forEach(function(f){f.classList.toggle('on',f.dataset.go===n)});
+    document.querySelectorAll('#nav a,.tabbar a[data-go]').forEach(function(a){a.classList.toggle('act',a.dataset.go===n)});
+    var th=document.getElementById('tbHome');if(th)th.classList.toggle('act',+n<6);
+    var fc=document.querySelector('#folders .folders'),fo=fc.querySelector('.folder-btn.on');if(fo&&fc.scrollWidth>fc.clientWidth){fc.scrollTo({left:fo.offsetLeft-16,behavior:'smooth'})}
+    store.set('wb01-lesson',n);
+    try{history.replaceState(null,'','#lesson-'+n)}catch(e){}
+    if(scroll){document.getElementById('folders').scrollIntoView({behavior:'smooth',block:'start'})}
+    document.querySelectorAll('.lesson.on .rv').forEach(function(el){el.classList.add('in')});
+  }
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();openLesson(b.dataset.go,true)})});
+  var start=(location.hash.match(/^#(?:lesson-|l)([1-9])$/)||[])[1]||store.get('wb01-lesson')||'1';
+  openLesson(start,false);
+
+  /* trackers */
+  var checks=store.get('wb01-checks')||{};
+  var fg=document.getElementById('ringFg'),C=2*Math.PI*55,bars=document.getElementById('lessonBars');
+  [1,2,3,4,5,7,8].forEach(function(n){
+    var b=document.createElement('button');b.type='button';b.className='lb';b.dataset.go=n;
+    b.innerHTML='<span>'+(n>5?'':'0'+n)+' '+names[n-1]+'</span><i><u data-lb="'+n+'"></u></i><em data-lbt="'+n+'">0%</em>';
+    b.addEventListener('click',function(){openLesson(n,true)});bars.appendChild(b);
+  });
+  function paint(){
+    var all=0,doneAll=0;
+    document.querySelectorAll('.tracker').forEach(function(tr){
+      var n=tr.dataset.tracker,items=tr.querySelectorAll('.check'),d=0;
+      items.forEach(function(c){var on=!!checks[c.dataset.check];c.classList.toggle('on',on);c.querySelector('.sw').classList.toggle('on',on);if(on)d++});
+      all+=items.length;doneAll+=d;
+      var pct=Math.round(d/items.length*100);
+      tr.querySelector('.tr-count b').textContent=d;
+      tr.querySelector('.tr-bar i').style.width=pct+'%';
+      tr.classList.toggle('full',d===items.length);
+      var fb=document.querySelector('[data-fbar="'+n+'"]');if(fb)fb.style.width=pct+'%';
+      var fbtn=document.querySelector('.folder-btn[data-go="'+n+'"]');if(fbtn)fbtn.classList.toggle('full',d===items.length);
+      document.querySelector('[data-lb="'+n+'"]').style.width=pct+'%';
+      document.querySelector('[data-lbt="'+n+'"]').textContent=pct+'%';
+    });
+    var p=all?Math.round(doneAll/all*100):0;
+    document.getElementById('cnt').textContent=p+'%';
+    document.getElementById('ringTxt').textContent=p+'%';
+    fg.style.strokeDasharray=C;fg.style.strokeDashoffset=C*(1-p/100);
+    document.getElementById('doneMsg').textContent=p===100?'Курс пройден — у тебя есть свой AI-помощник ♡':p?'Отмечено шагов: '+doneAll+' из '+all+'. Продолжай ♡':'Включай переключатели в трекере каждого урока — прогресс сохранится в этом браузере.';
+  }
+  document.querySelectorAll('.check').forEach(function(c){c.addEventListener('click',function(){
+    var k=c.dataset.check;checks[k]=!checks[k];store.set('wb01-checks',checks);paint();if(checks[k])hearts(c);
+  })});
+  document.getElementById('resetDone').addEventListener('click',function(){checks={};store.set('wb01-checks',checks);paint()});
+  paint();
+
+
+  /* glossary */
+  var glS=document.getElementById('glSearch'),glCat='all';
+  function glFilter(){var q=glS.value.trim().toLowerCase(),n=0;
+    document.querySelectorAll('#gloss .term').forEach(function(t){var ok=(glCat==='all'||t.dataset.cat===glCat)&&(!q||t.textContent.toLowerCase().indexOf(q)>-1);t.style.display=ok?'':'none';if(ok)n++});
+    document.getElementById('glEmpty').style.display=n?'none':''}
+  glS.addEventListener('input',glFilter);
+  document.querySelectorAll('.gl-chips .chip').forEach(function(c){c.addEventListener('click',function(){glCat=c.dataset.cat;document.querySelectorAll('.gl-chips .chip').forEach(function(x){x.classList.toggle('on',x===c)});glFilter()})});
+
+  /* backup */
+  document.getElementById('saveProg').addEventListener('click',function(){
+    var data={v:1,site:'workbook-01',saved:new Date().toISOString(),checks:store.get('wb01-checks')||{},favs:store.get('wb01-favs')||[],lesson:store.get('wb01-lesson')||'1'};
+    var url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+    var a=document.createElement('a');a.href=url;a.download='progress-workbook-01.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+  });
+  var pf=document.getElementById('progFile');
+  document.getElementById('loadProg').addEventListener('click',function(){pf.click()});
+  pf.addEventListener('change',function(){
+    var f=pf.files[0];if(!f)return;var r=new FileReader();
+    r.onload=function(){try{var d=JSON.parse(r.result);if(!d||d.site!=='workbook-01')throw 0;store.set('wb01-checks',d.checks||{});store.set('wb01-favs',d.favs||[]);store.set('wb01-lesson',d.lesson||'1');location.reload()}catch(e){alert('Это не файл прогресса воркбука 01')}};
+    r.readAsText(f);
+  });
+
+  paint();
+  /* reveal */
+  var els=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+    els.forEach(function(el){io.observe(el)});
+  }else{els.forEach(function(el){el.classList.add('in')})}
+
+  /* scroll progress, active nav, to top */
+  var prog=document.getElementById('prog'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+    prog.style.width=(max>0?h.scrollTop/max*100:0)+'%';
+    top.classList.toggle('show',h.scrollTop>700);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>
